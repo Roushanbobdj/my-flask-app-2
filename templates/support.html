@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+.support-wrap{
+    max-width:850px;
+    margin:50px auto;
+    padding:0 15px;
+}
+
+.support-title{
+    font-size:22px;
+    font-weight:600;
+    margin-bottom:25px;
+    color:#111827;
+}
+
+/* SUPPORT FORM */
+.support-card{
+    background:#ffffff;
+    padding:25px;
+    border-radius:14px;
+    box-shadow:0 12px 30px rgba(0,0,0,.08);
+    margin-bottom:35px;
+}
+
+.form-group{
+    margin-bottom:16px;
+}
+
+.form-group input,
+.form-group textarea{
+    width:100%;
+    padding:12px 14px;
+    border-radius:10px;
+    border:1px solid #e5e7eb;
+    font-size:14px;
+    outline:none;
+    transition:.2s;
+}
+
+.form-group textarea{
+    min-height:120px;
+    resize:none;
+}
+
+.form-group input:focus,
+.form-group textarea:focus{
+    border-color:#2563eb;
+    box-shadow:0 0 0 3px rgba(37,99,235,.1);
+}
+
+.support-btn{
+    background:#2563eb;
+    color:white;
+    padding:12px 22px;
+    border:none;
+    border-radius:10px;
+    font-size:14px;
+    font-weight:500;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.support-btn:hover{
+    background:#1e40af;
+}
+
+/* TICKETS */
+.ticket-title{
+    font-size:18px;
+    font-weight:600;
+    margin-bottom:15px;
+    color:#111827;
+}
+
+.ticket-card{
+    background:white;
+    padding:20px;
+    border-radius:14px;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+    margin-bottom:15px;
+}
+
+.ticket-card h4{
+    margin:0 0 8px 0;
+    font-size:16px;
+    font-weight:600;
+    color:#111827;
+}
+
+.ticket-card p{
+    margin:4px 0;
+    font-size:14px;
+    color:#374151;
+}
+
+.ticket-reply{
+    margin-top:10px;
+    padding:10px 14px;
+    background:#dcfce7;
+    color:#166534;
+    border-radius:10px;
+    font-weight:500;
+    font-size:14px;
+}
+
+.ticket-wait{
+    margin-top:10px;
+    font-size:14px;
+    color:#6b7280;
+    font-style:italic;
+}
+
+.ticket-date{
+    margin-top:6px;
+    font-size:12px;
+    color:#9ca3af;
+}
+</style>
+
+<div class="support-wrap">
+
+    <div class="support-title">🆘 Student Support</div>
+
+    <!-- SUPPORT FORM -->
+    <div class="support-card">
+        <form method="POST">
+
+            <div class="form-group">
+                <input type="text" name="subject" placeholder="Subject" required>
+            </div>
+
+            <div class="form-group">
+                <textarea name="message" placeholder="Describe your problem" required></textarea>
+            </div>
+
+            <button type="submit" class="support-btn">
+                Send Ticket
+            </button>
+
+        </form>
+    </div>
+
+    <!-- TICKET LIST -->
+    <div class="ticket-title">📩 My Tickets</div>
+
+    {% for t in tickets %}
+    <div class="ticket-card">
+
+        <h4>{{ t.subject }}</h4>
+        <p>{{ t.message }}</p>
+
+        {% if t.reply %}
+            <div class="ticket-reply">
+                💬 Admin Reply: {{ t.reply }}
+            </div>
+        {% else %}
+            <div class="ticket-wait">
+                ⌛ Waiting for reply
+            </div>
+        {% endif %}
+
+        <div class="ticket-date">
+            📅 {{ t.date }}
+        </div>
+
+    </div>
+    {% endfor %}
+
+</div>
+
+{% endblock %}

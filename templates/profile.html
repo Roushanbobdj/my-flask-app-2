@@ -1,0 +1,418 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+/* =========================
+   PROFILE WRAPPER
+========================= */
+.profile-wrapper{
+    padding:0 12px;
+}
+
+/* =========================
+   PROFILE MAIN CARD
+========================= */
+.profile-card{
+    background:#ffffff;
+    padding:18px;
+    border-radius:16px;
+    border:1px solid #e5e7eb;
+    max-width:900px;
+    margin:25px auto;
+}
+
+/* =========================
+   HEADER
+========================= */
+.profile-header{
+    background:linear-gradient(135deg,#4f46e5,#2563eb);
+    padding:22px 26px;
+    color:white;
+    display:flex;
+    gap:22px;
+    align-items:center;
+    flex-wrap:wrap;
+    border-radius:14px;
+}
+
+.profile-header img{
+    width:110px;
+    height:110px;
+    border-radius:50%;
+    object-fit:cover;
+    border:3px solid white;
+}
+
+.profile-header h2{
+    margin:0;
+    font-size:22px;
+    font-weight:600;
+    letter-spacing:.3px;
+}
+.profile-header img{
+    background:#e5e7eb;
+}
+/* =========================
+   STATUS BADGE
+========================= */
+.badge{
+    display:inline-block;
+    padding:5px 14px;
+    border-radius:999px;
+    font-size:12px;
+    margin-top:6px;
+    font-weight:500;
+}
+
+.badge.active{
+    background:#dcfce7;
+    color:#166534;
+}
+.badge.inactive{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+/* =========================
+   BODY
+========================= */
+.profile-body{
+    padding:26px 10px;
+}
+
+/* =========================
+   INFO GRID
+========================= */
+.info-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:16px;
+    margin-bottom:30px;
+}
+
+/* INFO CARD */
+.info-card{
+    background:#ffffff;
+    padding:14px 16px;
+    border-radius:12px;
+    border:1px solid #e5e7eb;
+}
+
+.info-card small{
+    color:#6b7280;
+    font-size:12px;
+}
+
+.info-card h3{
+    margin-top:4px;
+    font-size:16px;
+    font-weight:500;
+    color:#111827;
+    word-break:break-word;
+}
+
+/* =========================
+   FORM GRID
+========================= */
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px 22px;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+}
+
+.form-group label{
+    font-size:13px;
+    margin-bottom:5px;
+    color:#374151;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select{
+    padding:9px 11px;
+    border-radius:9px;
+    border:1px solid #d1d5db;
+    font-size:14px;
+}
+
+textarea{
+    resize:none;
+}
+
+.full{
+    grid-column:span 2;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+.btn{
+    margin-top:22px;
+    padding:11px 24px;
+    border:none;
+    border-radius:11px;
+    font-size:14px;
+    font-weight:500;
+    cursor:pointer;
+    background:#4f46e5;
+    color:white;
+    transition:.2s;
+}
+
+.btn:hover{
+    background:#3730a3;
+}
+
+.print-btn{
+    background:#16a34a;
+    margin-bottom:18px;
+}
+
+.print-btn:hover{
+    background:#15803d;
+}
+
+/* =========================
+   MOBILE FIX (IMPORTANT)
+========================= */
+@media(max-width:700px){
+
+    .profile-card{
+        padding:14px;
+        margin:15px auto;
+    }
+
+    .profile-header{
+        flex-direction:column;
+        text-align:center;
+        justify-content:center;
+        gap:14px;
+        padding:20px 16px;
+    }
+
+    .profile-header img{
+        width:90px;
+        height:90px;
+    }
+
+    .profile-header h2{
+        font-size:18px;
+    }
+
+    .info-grid{
+        grid-template-columns:1fr;
+    }
+
+    .info-card h3{
+        font-size:14px;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .full{
+        grid-column:span 1;
+    }
+
+    .print-btn{
+        width:100%;
+        text-align:center;
+    }
+}
+</style>
+
+<div class="profile-wrapper">
+
+    <!-- PRINT -->
+    <div style="padding:20px; text-align:right;">
+        <button onclick="window.print()" class="btn print-btn">
+            🖨 Print / Save PDF
+        </button>
+    </div>
+
+    <!-- HEADER -->
+    <div class="profile-header">
+        {% set profile_photo = student.photo if student.photo else 'default.png' %}
+
+        <img
+            class="profile-avatar"
+            src="{{ url_for('static', filename='uploads/' + profile_photo if student.photo else 'default.png') }}"
+            onerror="this.onerror=null;this.src='/static/default.png';"
+        />
+    
+
+        <div>
+            <h2>{{ student.name }}</h2>
+
+            <p style="opacity:.9;font-size:14px;">
+                🎓 Admission No:
+                <strong>{{ student.admission_number }}</strong>
+            </p>
+
+            {% if student.is_active %}
+                <span class="badge active">● Active Student</span>
+            {% else %}
+                <span class="badge inactive">● Inactive</span>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- BODY -->
+    <div class="profile-body">
+
+        <!-- INFO -->
+        <div class="info-grid">
+
+            <div class="info-card">
+                <small>📅 Joining Date</small>
+                <h3>{{ student.join_date }}</h3>
+            </div>
+
+            <div class="info-card">
+                <small>💺 Seat Number</small>
+                <h3>{{ student.seat_number or "Not Assigned" }}</h3>
+            </div>
+
+            <div class="info-card">
+                <small>⏰ Timing</small>
+                <h3>{{ student.timing_from }} – {{ student.timing_to }}</h3>
+            </div>
+
+            <div class="info-card">
+                <small>💳 Monthly Fee</small>
+                <h3>₹{{ student.monthly_fee }}</h3>
+            </div>
+
+            <div class="info-card">
+                <small>💰 Total Fee Paid</small>
+                <h3>₹{{ total_paid }}</h3>
+            </div>
+
+            {% if last_payment %}
+            <div class="info-card">
+                <small>📆 Fee Paid Till</small>
+                <h3>{{ last_payment.paid_month }}/{{ last_payment.paid_year }}</h3>
+            </div>
+            {% endif %}
+
+        </div>
+
+        <!-- FORM -->
+        <form method="POST" enctype="multipart/form-data">
+
+            <div class="form-grid">
+
+                {% if current_user.role == "admin" %}
+
+                <div class="form-group">
+                    <label>📧 Email</label>
+                    <input type="email" name="email" value="{{ student.email }}">
+                </div>
+
+                <div class="form-group">
+                    <label>📞 Phone</label>
+                    <input type="text" name="phone" value="{{ student.phone }}">
+                </div>
+
+                <div class="form-group full">
+                    <label>🏠 Address</label>
+                    <textarea name="address">{{ student.address }}</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>💺 Seat Number</label>
+                    <input type="text" name="seat_number" value="{{ student.seat_number }}">
+                </div>
+
+                <div class="form-group">
+                    <label>⏰ Timing From</label>
+                    <input type="time" name="timing_from" value="{{ student.timing_from }}">
+                </div>
+
+                <div class="form-group">
+                    <label>⏰ Timing To</label>
+                    <input type="time" name="timing_to" value="{{ student.timing_to }}">
+                </div>
+
+                <div class="form-group">
+                    <label>⚙ Status</label>
+                    <select name="is_active">
+                        <option value="1" {% if student.is_active %}selected{% endif %}>
+                            Active
+                        </option>
+                        <option value="0" {% if not student.is_active %}selected{% endif %}>
+                            Inactive
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>📅 Joining Date</label>
+                    <input type="date" name="join_date" value="{{ student.join_date }}">
+                </div>
+
+                {% endif %}
+
+                <div class="form-group full">
+                    <label>🖼 Change Photo</label>
+                    <input type="file" name="photo">
+                </div>
+
+            </div>
+
+            <button type="submit" class="btn">
+                {% if current_user.role == "admin" %}
+                    💾 Save Changes
+                {% else %}
+                    📸 Update Photo
+                {% endif %}
+            </button>
+
+        </form>
+
+        {% if current_user.role == "admin" %}
+        <hr style="margin:40px 0;">
+
+        <h3 style="margin-bottom:15px;">🔐 Reset Student Password</h3>
+
+        <form method="POST"
+              action="{{ url_for('reset_password', id=student.id) }}">
+
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label>New Password</label>
+                    <input type="password"
+                           name="new_password"
+                           placeholder="Enter new password"
+                           required>
+                </div>
+
+                <div class="form-group">
+                    <label>Confirm Password</label>
+                    <input type="password"
+                           name="confirm_password"
+                           placeholder="Confirm password"
+                           required>
+                </div>
+
+            </div>
+
+            <button type="submit"
+                    class="btn"
+                    style="background:#dc2626;">
+                🔁 Reset Password
+            </button>
+        </form>
+        {% endif %}
+
+    </div>
+</div> 
+{% endblock %}
+

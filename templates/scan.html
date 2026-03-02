@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+.scan-wrap{
+    max-width:520px;
+    margin:70px auto;
+    padding:0 15px;
+}
+
+.scan-card{
+    background:white;
+    padding:35px 30px;
+    border-radius:18px;
+    box-shadow:0 20px 45px rgba(0,0,0,.08);
+    text-align:center;
+}
+
+.scan-card h2{
+    font-size:22px;
+    font-weight:600;
+    color:#111827;
+    margin-bottom:6px;
+}
+
+.scan-card p{
+    font-size:14px;
+    color:#6b7280;
+    margin-bottom:20px;
+}
+
+#reader{
+    width:100%;
+    border-radius:14px;
+    overflow:hidden;
+}
+
+.scan-hint{
+    margin-top:14px;
+    font-size:13px;
+    color:#9ca3af;
+}
+</style>
+
+<div class="scan-wrap">
+    <div class="scan-card">
+        <h2>📷 Scan QR Code</h2>
+        <p>Scan to check-in or check-out</p>
+
+        <div id="reader"></div>
+
+        <div class="scan-hint">
+            Align QR code inside the frame
+        </div>
+    </div>
+</div>
+
+<!-- QR SCANNER LIB -->
+<script src="https://unpkg.com/html5-qrcode"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const html5QrCode = new Html5Qrcode("reader");
+
+    html5QrCode.start(
+        { facingMode: "environment" },   // ✅ FORCE BACK CAMERA
+        {
+            fps: 10,
+            qrbox: { width: 250, height: 250 }
+        },
+        (decodedText) => {
+
+            // 🛑 stop camera immediately
+            html5QrCode.stop().then(() => {
+
+                fetch("/scan", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ token: decodedText })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    alert(data.message);
+                    window.location.href = "/student_dashboard";
+                })
+                .catch(() => {
+                    alert("❌ Server error");
+                    window.location.href = "/student_dashboard";
+                });
+
+            });
+        },
+        (errorMessage) => {
+            // ignore scan errors
+            console.log(errorMessage);
+        }
+    ).catch(err => {
+        alert("❌ Camera access denied or not supported");
+        console.error(err);
+    });
+
+});
+</script>
+
+{% endblock %}

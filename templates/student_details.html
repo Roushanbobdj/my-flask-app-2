@@ -1,0 +1,202 @@
+<style>
+/* ===== PAGE TITLE ===== */
+h2{
+    margin-bottom:20px;
+}
+
+/* ===== SEARCH BOX ===== */
+.search-box{
+    background:white;
+    padding:22px;
+    border-radius:14px;
+    box-shadow:0 12px 30px rgba(0,0,0,.08);
+    margin-bottom:30px;
+    display:flex;
+    gap:15px;
+    align-items:center;
+}
+
+.search-box input{
+    padding:12px;
+    width:280px;
+    border-radius:10px;
+    border:1px solid #d1d5db;
+    font-size:15px;
+}
+
+.search-box button{
+    padding:12px 22px;
+    border:none;
+    border-radius:10px;
+    background:#4f46e5;
+    color:white;
+    font-size:15px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.search-box button:hover{
+    background:#3730a3;
+}
+
+/* ===== CARD ===== */
+.section-card{
+    background:white;
+    padding:28px;
+    border-radius:18px;
+    box-shadow:0 15px 40px rgba(0,0,0,.08);
+    margin-bottom:30px;
+}
+
+/* ===== PROFILE CARD ===== */
+.student-profile{
+    display:grid;
+    grid-template-columns:160px 1fr;
+    gap:30px;
+    align-items:center;
+}
+
+.student-profile img{
+    width:160px;
+    height:160px;
+    border-radius:16px;
+    object-fit:cover;
+    border:4px solid #e5e7eb;
+}
+
+/* ===== INFO GRID ===== */
+.student-info{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:16px;
+}
+
+.info-item{
+    background:#f9fafb;
+    padding:14px 16px;
+    border-radius:12px;
+}
+
+.info-item span{
+    font-size:13px;
+    color:#6b7280;
+}
+
+.info-item p{
+    margin:4px 0 0;
+    font-weight:600;
+}
+
+/* ===== STUDENT LIST ===== */
+.student-list p{
+    padding:12px;
+    border-bottom:1px solid #e5e7eb;
+}
+
+.student-list p:last-child{
+    border-bottom:none;
+}
+</style>
+
+<h2>📋 Student Details</h2>
+
+<!-- 🔍 SEARCH -->
+<div class="search-box">
+    <form method="POST">
+        <input
+            type="text"
+            name="admission_number"
+            placeholder="Enter Admission Number"
+            required
+        >
+        <button type="submit">🔍 Search</button>
+    </form>
+</div>
+
+{% if student %}
+
+<!-- 💰 FEE SUMMARY -->
+<div class="section-card">
+    <h3>💰 Fee Summary</h3>
+
+    <p><strong>Monthly Fee:</strong> ₹{{ student.monthly_fee or 0 }}</p>
+    <p><strong>Total Paid:</strong> ₹{{ total_paid or 0 }}</p>
+
+    {% if last_payment %}
+        <p>
+            <strong>Last Paid:</strong>
+            {{ last_payment.paid_month }}/{{ last_payment.paid_year }}
+        </p>
+    {% else %}
+        <p><strong>Last Paid:</strong> Not Paid Yet</p>
+    {% endif %}
+</div>
+
+<!-- 👤 STUDENT PROFILE -->
+<div class="section-card">
+
+    <h3>👤 Student Profile</h3>
+    <br>
+
+    <div class="student-profile">
+
+        {% if student.photo %}
+            <img src="{{ url_for('static', filename='uploads/' ~ student.photo) }}">
+        {% else %}
+            <img src="{{ url_for('static', filename='default.png') }}">
+        {% endif %}
+
+        <div class="student-info">
+
+            <div class="info-item">
+                <span>Name</span>
+                <p>{{ student.name }}</p>
+            </div>
+
+            <div class="info-item">
+                <span>Admission No</span>
+                <p>{{ student.admission_number }}</p>
+            </div>
+
+            <div class="info-item">
+                <span>Phone</span>
+                <p>{{ student.phone or '-' }}</p>
+            </div>
+
+            <div class="info-item">
+                <span>Email</span>
+                <p>{{ student.email or '-' }}</p>
+            </div>
+
+            <div class="info-item">
+                <span>Address</span>
+                <p>{{ student.address or '-' }}</p>
+            </div>
+
+            <div class="info-item">
+                <span>Monthly Fee</span>
+                <p>₹{{ student.monthly_fee or 0 }}</p>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- 👨‍🎓 ALL STUDENTS -->
+<div class="section-card student-list">
+    <h3>👨‍🎓 All Registered Students</h3>
+
+    {% for s in students %}
+        <p>
+            <strong>{{ s.name }}</strong> —
+            Admission: {{ s.admission_number }} |
+            📞 {{ s.phone or '-' }}
+        </p>
+    {% endfor %}
+</div>
+
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+/* ===== FULL PAGE BG ===== */
+.auth-wrap{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:
+        radial-gradient(circle at top left, #6366f1, transparent 60%),
+        radial-gradient(circle at bottom right, #3b82f6, transparent 60%),
+        #0f172a;
+    padding:20px;
+}
+
+/* ===== CARD ===== */
+.auth-card{
+    background:rgba(255,255,255,0.95);
+    backdrop-filter: blur(10px);
+    width:100%;
+    max-width:420px;
+    padding:40px 35px;
+    border-radius:22px;
+    box-shadow:0 25px 60px rgba(0,0,0,.35);
+    animation:fadeIn .6s ease;
+}
+
+/* ANIMATION */
+@keyframes fadeIn{
+    from{opacity:0; transform:translateY(20px);}
+    to{opacity:1; transform:none;}
+}
+
+/* ===== HEADER ===== */
+.auth-header{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.auth-header .icon{
+    font-size:42px;
+    margin-bottom:10px;
+}
+
+.auth-header h2{
+    margin:0;
+    font-size:24px;
+    font-weight:600;
+    color:#111827;
+}
+
+.auth-header p{
+    margin-top:6px;
+    font-size:14px;
+    color:#6b7280;
+}
+
+/* ===== INPUT GROUP ===== */
+.input-group{
+    margin-bottom:18px;
+}
+
+.input-group label{
+    display:block;
+    font-size:13px;
+    font-weight:500;
+    margin-bottom:6px;
+    color:#374151;
+}
+
+.input-group input{
+    width:100%;
+    padding:14px 14px;
+    border-radius:12px;
+    border:1px solid #e5e7eb;
+    font-size:15px;
+    transition:.25s;
+}
+
+.input-group input:focus{
+    outline:none;
+    border-color:#6366f1;
+    box-shadow:0 0 0 3px rgba(99,102,241,.25);
+}
+
+/* ===== BUTTON ===== */
+.auth-card button{
+    width:100%;
+    padding:14px;
+    margin-top:10px;
+    border:none;
+    border-radius:14px;
+    background:linear-gradient(135deg,#4f46e5,#6366f1);
+    color:white;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.auth-card button:hover{
+    transform:translateY(-2px);
+    box-shadow:0 12px 30px rgba(79,70,229,.45);
+}
+
+/* ===== FOOTER ===== */
+.auth-footer{
+    text-align:center;
+    margin-top:22px;
+    font-size:14px;
+    color:#6b7280;
+}
+
+.auth-footer a{
+    color:#4f46e5;
+    font-weight:500;
+    text-decoration:none;
+}
+.auth-footer a:hover{
+    text-decoration:underline;
+}
+
+/* ===== MOBILE ===== */
+@media(max-width:480px){
+    .auth-card{
+        padding:30px 25px;
+    }
+}
+</style>
+
+<div class="auth-wrap">
+    <div class="auth-card">
+
+        <div class="auth-header">
+            <div class="icon">🛡️</div>
+            <h2>Admin Login</h2>
+            <p>Secure access to dashboard</p>
+        </div>
+
+        <form method="POST">
+
+            <div class="input-group">
+                <label>Admission Number</label>
+                <input type="text" name="admission_number" placeholder="Enter admission number" required>
+            </div>
+
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" name="password" placeholder="Enter password" required>
+            </div>
+
+            <button type="submit">Sign In</button>
+        </form>
+
+        
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

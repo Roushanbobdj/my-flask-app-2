@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Expense | Admin Dashboard</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        *{
+            box-sizing:border-box;
+            font-family:'Inter', sans-serif;
+        }
+
+        body{
+            margin:0;
+            background:#f4f6fb;
+            color:#111827;
+        }
+
+        .page-wrapper{
+            max-width:900px;
+            margin:50px auto;
+            background:#ffffff;
+            border-radius:16px;
+            box-shadow:0 20px 40px rgba(0,0,0,0.08);
+            padding:40px;
+        }
+
+        .page-header{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:35px;
+        }
+
+        .page-header h2{
+            font-size:26px;
+            font-weight:700;
+            margin:0;
+        }
+
+        .btn-secondary{
+            background:#eef2ff;
+            color:#4338ca;
+            padding:10px 18px;
+            border-radius:10px;
+            text-decoration:none;
+            font-weight:600;
+            transition:.2s;
+        }
+
+        .btn-secondary:hover{
+            background:#e0e7ff;
+        }
+
+        /* ✅ NEW BACK BUTTON STYLE (ADDED) */
+        .back-btn{
+            display:inline-flex;
+            align-items:center;
+            gap:6px;
+            padding:10px 18px;
+            background:#f3f4f6;
+            color:#111827;
+            border-radius:8px;
+            text-decoration:none;
+            font-weight:600;
+            border:1px solid #e5e7eb;
+            transition:all 0.2s ease;
+        }
+
+        .back-btn:hover{
+            background:#e5e7eb;
+            transform:translateX(-2px);
+        }
+
+        .grid{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:22px;
+        }
+
+        label{
+            font-weight:600;
+            font-size:14px;
+            margin-bottom:6px;
+            display:block;
+            color:#374151;
+        }
+
+        input, select, textarea{
+            width:100%;
+            padding:12px 14px;
+            border-radius:10px;
+            border:1px solid #d1d5db;
+            outline:none;
+            font-size:14px;
+            transition:.2s;
+            background:#fff;
+        }
+
+        input::placeholder,
+        textarea::placeholder{
+            color:#9ca3af;
+        }
+
+        input:focus, select:focus, textarea:focus{
+            border-color:#4f46e5;
+            box-shadow:0 0 0 3px rgba(79,70,229,0.15);
+        }
+
+        textarea{
+            resize:none;
+        }
+
+        .full-width{
+            grid-column:1 / -1;
+        }
+
+        .actions{
+            display:flex;
+            justify-content:flex-end;
+            gap:12px;
+            margin-top:35px;
+            border-top:1px solid #e5e7eb;
+            padding-top:25px;
+        }
+
+        .btn-primary{
+            background:#4f46e5;
+            color:#fff;
+            padding:12px 26px;
+            border-radius:10px;
+            border:none;
+            cursor:pointer;
+            font-weight:600;
+            font-size:15px;
+            transition:.2s;
+        }
+
+        .btn-primary:hover{
+            background:#4338ca;
+            transform:translateY(-1px);
+        }
+
+        @media(max-width:768px){
+            .grid{
+                grid-template-columns:1fr;
+            }
+
+            .page-wrapper{
+                margin:20px;
+                padding:25px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-wrapper">
+
+    <!-- Header -->
+    <div class="page-header">
+        <h2>➕ Add New Expense</h2>
+        <a href="{{ url_for('admin_dashboard') }}" class="back-btn" title="Back to Dashboard">
+            ⬅
+    </a>
+    </div>
+
+    <!-- Form -->
+    <form method="POST">
+
+        <div class="grid">
+
+            <div>
+                <label>Expense Category</label>
+                <select name="category" required>
+                    <option value="">Select Category</option>
+                    <option>Staff Salary</option>
+                    <option>Electricity Bill</option>
+                    <option>Maintenance</option>
+                    <option>Water Bill</option>
+                    <option>Internet</option>
+                    <option>Furniture</option>
+                    <option>Stationery</option>
+                    <option>Repair</option>
+                    <option>Other</option>
+                </select>
+            </div>
+
+            <div>
+                <label>Expense Date</label>
+                <input type="date" name="date" required>
+            </div>
+
+            <div>
+                <label>Expense Title</label>
+                <input type="text" name="title" placeholder="e.g. February Electricity Bill" required>
+            </div>
+
+            <div>
+                <label>Amount (₹)</label>
+                <input type="number" name="amount" placeholder="e.g. 5200" required>
+            </div>
+
+            <div>
+                <label>Payment Mode</label>
+                <select name="payment">
+                    <option>Cash</option>
+                    <option>UPI</option>
+                    <option>Bank Transfer</option>
+                    <option>Cheque</option>
+                </select>
+            </div>
+
+            <div>
+                <label>Paid To</label>
+                <input type="text" name="paid_to" placeholder="e.g. Electricity Department">
+            </div>
+
+            <div class="full-width">
+                <label>Notes / Description</label>
+                <textarea name="notes" rows="4" placeholder="Optional remarks or bill details"></textarea>
+            </div>
+
+        </div>
+
+        <div class="actions">
+            <a href="{{ url_for('admin_dashboard') }}" class="btn-secondary">Cancel</a>
+            <button type="submit" class="btn-primary">💾 Save Expense</button>
+        </div>
+
+    </form>
+
+</div>
+
+</body>
+</html>

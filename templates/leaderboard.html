@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+.leaderboard-card{
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th, td{
+    padding:14px;
+    text-align:left;
+}
+
+th{
+    background:#f1f5f9;
+}
+
+tr:hover{
+    background:#f8fafc;
+}
+
+.progress{
+    background:#e5e7eb;
+    height:8px;
+    border-radius:5px;
+    overflow:hidden;
+}
+
+.progress-bar{
+    height:8px;
+    background:#2563eb; /* default */
+    border-radius:5px;
+    width:0%;
+    transition:width 0.6s ease;
+}
+
+.progress-bar.low{background:#ef4444;}
+.progress-bar.mid{background:#f59e0b;}
+.progress-bar.high{background:#22c55e;}
+
+.gold{color:#f59e0b;font-weight:600;}
+.silver{color:#9ca3af;font-weight:600;}
+.bronze{color:#d97706;font-weight:600;}
+</style>
+
+<div class="leaderboard-card">
+    <h2>🏆 Student Leaderboard</h2>
+
+    <table>
+        <tr>
+            <th>Rank</th>
+            <th>Name</th>
+            <th>Total Hours</th>
+            <th>Days</th>
+            <th>Progress</th>
+        </tr>
+
+        {% for row in results %}
+        <tr>
+            <td class="{% if loop.index==1 %}gold{% elif loop.index==2 %}silver{% elif loop.index==3 %}bronze{% endif %}">
+                {% if loop.index == 1 %}🥇{% elif loop.index == 2 %}🥈{% elif loop.index == 3 %}🥉{% else %}{{ loop.index }}{% endif %}
+            </td>
+            <td>{{ row.name }}</td>
+            <td>{{ row.total_hours }} hrs</td>
+            <td>{{ row.total_days }}</td>
+            <td>
+                <div class="progress">
+                    <div class="progress-bar 
+                        {% if row.progress < 40 %}low
+                        {% elif row.progress < 75 %}mid
+                        {% else %}high{% endif %}"
+                        data-progress="{{ row.progress }}">
+                    </div>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<script>
+document.querySelectorAll(".progress-bar").forEach(bar => {
+    bar.style.width = bar.dataset.progress + "%";
+});
+</script>
+
+{% endblock %}

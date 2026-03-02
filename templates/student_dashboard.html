@@ -1,0 +1,430 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+
+/* ===== DASHBOARD HEADER ===== */
+.dashboard-header{
+    background: linear-gradient(135deg,#4f46e5,#3b82f6);
+    color:white;
+    padding:25px;
+    border-radius:18px;
+    margin-bottom:30px;
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+}
+
+.dashboard-header h2{
+    margin:0;
+}
+
+.dashboard-header p{
+    margin-top:6px;
+    opacity:.9;
+}
+.dashboard-header{
+    position:relative;
+    overflow:hidden;
+}
+
+.dashboard-header::after{
+    content:"";
+    position:absolute;
+    top:-50%;
+    right:-50%;
+    width:300px;
+    height:300px;
+    background:rgba(255,255,255,0.15);
+    border-radius:50%;
+}
+.profile-mini{
+    margin-top:15px;
+    font-size:14px;
+    background:rgba(255,255,255,.15);
+    display:inline-block;
+    padding:6px 14px;
+    border-radius:20px;
+}
+
+/* ===== STATS GRID ===== */
+.stats-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:22px;
+    margin-bottom:30px;
+}
+
+/* CARD */
+.stat-card{
+    background:linear-gradient(180deg,#ffffff,#f9fafb);
+    padding:26px;
+    border-radius:20px;
+    box-shadow:0 15px 35px rgba(0,0,0,.08);
+    transition:all .35s ease;
+    position:relative;
+    overflow:hidden;
+}
+
+/* subtle light effect */
+.stat-card::before{
+    content:"";
+    position:absolute;
+    top:-50%;
+    right:-50%;
+    width:200px;
+    height:200px;
+    background:rgba(79,70,229,.08);
+    border-radius:50%;
+}
+
+/* hover effect */
+.stat-card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 25px 55px rgba(0,0,0,.15);
+}
+
+/* TITLE */
+.stat-card h4{
+    font-size:13px;
+    letter-spacing:.5px;
+    text-transform:uppercase;
+    color:#6b7280;
+    margin-bottom:10px;
+}
+
+/* VALUE */
+.stat-card h2{
+    font-size:32px;
+    font-weight:600;
+    color:#111827;
+}
+
+/* ===== ACTION BUTTONS ===== */
+.actions{
+    display:flex;
+    gap:18px;
+    flex-wrap:wrap;
+}
+
+.actions a{
+    text-decoration:none;
+}
+
+.actions button{
+    padding:14px 24px;
+    font-size:15px;
+    border:none;
+    border-radius:12px;
+    background:#4f46e5;
+    color:white;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.actions button:hover{
+    background:#3730a3;
+    transform:scale(1.05);
+}
+
+/* ===== FEE CARDS ===== */
+.fee-card{
+    padding:20px;
+    border-radius:15px;
+    margin-bottom:25px;
+    color:white;
+    font-weight:500;
+    box-shadow:0 10px 25px rgba(0,0,0,.1);
+}
+
+.fee-paid{
+    background:linear-gradient(135deg,#16a34a,#22c55e);
+}
+
+.fee-unpaid{
+    background:linear-gradient(135deg,#dc2626,#ef4444);
+}
+
+.fee-expired{
+    background:linear-gradient(135deg,#b91c1c,#ef4444);
+}
+
+.fee-warning{
+    background:rgba(255,255,255,.2);
+    padding:10px;
+    border-radius:10px;
+    margin-top:10px;
+    font-size:14px;
+}
+
+/* ===== ATTENDANCE CALENDAR ===== */
+.attendance-calendar{
+    margin-top:35px;
+    background:white;
+    padding:22px;
+    border-radius:18px;
+    box-shadow:0 12px 30px rgba(0,0,0,.08);
+}
+
+.attendance-calendar h3{
+    margin-bottom:18px;
+    font-size:18px;
+    font-weight:600;
+    color:#111827;
+}
+
+/* TABLE */
+.attendance-calendar table{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:6px;
+}
+
+/* DAY CELL */
+.attendance-calendar td{
+    width:42px;
+    height:42px;
+    text-align:center;
+    vertical-align:middle;
+    font-weight:600;
+    font-size:14px;
+    border-radius:12px;
+    background:#f1f5f9;
+    color:#334155;
+    transition:.25s;
+    cursor:pointer;
+}
+
+/* HOVER */
+.attendance-calendar td:hover{
+    transform:scale(1.08);
+}
+
+/* STATUS COLORS */
+.attendance-calendar .present{
+    background:linear-gradient(135deg,#16a34a,#22c55e);
+    color:white;
+    box-shadow:0 6px 15px rgba(34,197,94,.45);
+}
+
+.attendance-calendar .absent{
+    background:linear-gradient(135deg,#dc2626,#ef4444);
+    color:white;
+    box-shadow:0 6px 15px rgba(239,68,68,.45);
+}
+
+</style>
+
+<!-- ===== DASHBOARD HEADER ===== -->
+<div class="dashboard-header" style="position:relative;">
+    <h2>🎓 Welcome, {{ student.name }}</h2>
+
+    <a href="{{ url_for('notifications') }}" 
+       style="position:absolute; top:25px; right:25px; color:white; text-decoration:none; font-size:24px;">
+        🔔
+        {% if unread_count > 0 %}
+            <span style="background:red; color:white; border-radius:50%; padding:2px 8px; font-size:12px;">
+                {{ unread_count }}
+            </span>
+        {% endif %}
+    </a>
+
+    <p>Track your study progress & attendance easily</p>
+
+    <div class="profile-mini">
+        Admission No: {{ student.admission_number }}
+    </div>
+</div>
+
+
+<!-- ===== FEE STATUS ===== -->
+
+<div class="fee-card
+    {% if fee_status == 'paid' %} fee-paid
+    {% elif fee_status == 'due' %} fee-unpaid
+    {% elif fee_status == 'advance' %} fee-paid
+    {% else %} fee-unpaid
+    {% endif %}
+">
+{% if fee_status == "paid" %}
+    ✅ Fee Paid <br>
+    ⏳ {{ remaining_days }} days left
+
+{% elif fee_status == "due" %}
+    ⚠ Partial Fee Paid <br>
+    💰 Paid: ₹{{ paid_amount }} <br>
+    ❌ Due: ₹{{ due_amount }}
+
+{% elif fee_status == "advance" %}
+    💙 Advance Fee Paid <br>
+    📅 For Month: {{ advance_month }}
+
+{% else %}
+    ❌ Fee Not Paid <br>
+    Please contact admin
+{% endif %}
+</div>
+<!-- ===== stats-grid ===== -->
+<div class="stats-grid">
+
+    <div class="stat-card">
+        <h4>⏱ Today Hours</h4>
+        <h2>{{ today_hours|default(0) }} hrs</h2>
+    </div>
+
+    <div class="stat-card">
+        <h4>📊 Total Hours</h4>
+        <h2 style="color:blue; cursor:pointer;" onclick="openGraph()">
+            {{ total_hours|default(0) }} hrs
+        </h2>
+    </div>
+
+    <div class="stat-card">
+        <h4>📅 Total Days</h4>
+        <h2>{{ total_days|default(0) }}</h2>
+    </div>
+
+    <!-- 🔥 STRIKE CARD -->
+    <div class="stat-card">
+        <h4>🔥 Attendance Strike</h4>
+        <h2 style="color:#16a34a;">
+            {{ student.current_strike }} Days
+        </h2>
+    </div>
+
+</div>
+
+<!-- ===== ACTION BUTTONS ===== -->
+<div class="actions">
+    <a href="{{ url_for('scan') }}"><button>📷 Scan QR</button></a>
+    <a href="{{ url_for('leaderboard') }}"><button>🏆 View Leaderboard</button></a>
+</div>
+
+<!-- ===== ATTENDANCE CALENDAR ===== -->
+<div class="attendance-calendar">
+    <h3>📅 Attendance This Month</h3>
+    <table>
+        <tr>
+            {% for day in month_days %}
+                {% set status = attendance_dict.get(day.strftime('%Y-%m-%d')) %}
+                <td class="{{ status }}">
+                    {{ day.day }}
+                    {% if status == 'present' %}
+                        &#10004;
+                    {% elif status == 'absent' %}
+                        &#10008;
+                    {% endif %}
+                </td>
+            {% endfor %}
+        </tr>
+    </table>
+</div>
+
+<!-- ===== GRAPH MODAL ===== -->
+<div id="graphModal" style="
+display:none;
+position:fixed;
+top:0; left:0;
+width:100%; height:100%;
+background:rgba(0,0,0,0.6);
+z-index:9999;
+">
+
+  <div style="
+  background:white;
+  width:85%;
+  max-width:800px;
+  margin:60px auto;
+  padding:25px;
+  border-radius:15px;
+  position:relative;
+  ">
+    <h3>📊 Daily Study Hours</h3>
+    <div style="height:400px;">
+    <canvas id="hoursChart"></canvas>
+</div>
+    
+
+    <button onclick="closeGraph()" style="
+
+        margin-top:15px;
+        padding:10px 20px;
+        border:none;
+        border-radius:8px;
+        background:#ef4444;
+        color:white;
+        cursor:pointer;
+    ">
+        Close
+    </button>
+  </div>
+
+</div> 
+
+<!-- modal ka HTML yahan khatam hota hai -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<input type="hidden" id="graphLabels" value='{{ graph_labels | tojson }}'>
+<input type="hidden" id="graphHours" value='{{ graph_hours | tojson }}'>
+
+
+
+<script>
+let chart = null;
+
+function openGraph() {
+    document.getElementById("graphModal").style.display = "block";
+
+    const labels = JSON.parse(
+        document.getElementById("graphLabels").value
+    );
+
+    const hours = JSON.parse(
+        document.getElementById("graphHours").value
+    );
+
+    const ctx = document.getElementById("hoursChart").getContext("2d");
+
+    if (chart) {
+        chart.destroy();
+    }
+
+    chart = new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "Study Hours",
+                data: hours,
+                backgroundColor: "#3b82f6"
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    min: 0,
+                    max: 12,          // 👈 12 hours fixed
+                    ticks: {
+                        stepSize: 1,  // 👈 sirf 1,2,3,4
+                        callback: function(value) {
+                            return value + " hr";
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: "Hours"
+                    }
+                }
+            }
+        }
+    });
+}
+
+function closeGraph() {
+    document.getElementById("graphModal").style.display = "none";
+}
+</script>
+
+{% endblock %}

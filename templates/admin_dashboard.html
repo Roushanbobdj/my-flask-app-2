@@ -1,0 +1,436 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+/* ===== TITLE ===== */
+.dashboard-title{
+    margin-bottom:25px;
+    font-weight:600;
+    font-size:22px;
+}
+
+/* ===== STATS GRID ===== */
+.stats-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:22px;
+}
+
+/* ===== STAT CARD ===== */
+.stat-card{
+    background:white;
+    padding:26px;
+    border-radius:18px;
+    box-shadow:0 12px 30px rgba(0,0,0,.08);
+    transition:transform .25s ease, box-shadow .25s ease;
+    cursor:pointer;
+    border:2px solid transparent;
+    position:relative;
+    overflow:hidden;
+    z-index:1;
+}
+
+.stat-card::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(135deg,rgba(79,70,229,.08),transparent);
+    opacity:0;
+    transition:.3s;
+    z-index:-1;
+}
+
+.stat-card:hover::after{
+    opacity:1;
+}
+
+.stat-card:hover{
+    transform:translateY(-4px);
+    border-color:#4f46e5;
+}
+
+.stat-card h3{
+    color:#6b7280;
+    font-size:15px;
+    margin-bottom:8px;
+}
+
+.stat-card p{
+    font-size:28px;
+    font-weight:600;
+    color:#111827;
+}
+
+/* ===== ACTIVE CARD ===== */
+.active-card{
+    background:#eef2ff;
+    border-color:#4f46e5;
+}
+
+.active-card h3{
+    color:#3730a3;
+}
+
+/* ===== SECTION BOX ===== */
+.section-box{
+    margin-top:40px;
+    background:white;
+    padding:28px;
+    border-radius:18px;
+    box-shadow:0 12px 30px rgba(0,0,0,.08);
+    position:relative;
+    z-index:1;
+}
+
+/* ===== VIEW EXPENSE BUTTON ===== */
+.view-expense-btn{
+    display:inline-block;
+    margin-top:18px;
+    padding:12px 20px;
+    background:#1e40af;
+    color:white;
+    text-decoration:none;
+    border-radius:10px;
+    font-size:14px;
+    font-weight:500;
+    transition:.25s;
+    position:relative;
+    z-index:5;
+    pointer-events:auto;
+}
+
+.view-expense-btn:hover{
+    background:#1e3a8a;
+    transform:translateY(-2px);
+}
+
+/* ===== COMMON BUTTON ===== */
+button{
+    padding:10px 18px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:14px;
+    transition:.25s;
+}
+
+/* ===== BUTTON COLORS ===== */
+.primary-btn{
+    background:#4f46e5;
+    color:white;
+}
+
+.primary-btn:hover{
+    background:#3730a3;
+    transform:translateY(-1px);
+}
+
+.success-btn{
+    background:#16a34a;
+    color:white;
+}
+
+.success-btn:hover{
+    background:#15803d;
+}
+
+/* ===== QUICK ACTIONS ===== */
+.quick-actions{
+    margin-top:30px;
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+/* ===== STUDENT FEE CARD ===== */
+.student-fee-card{
+    background:#f2f8f1;
+    padding:18px;
+    border-radius:14px;
+    margin-bottom:16px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:15px;
+    border:1px solid #8af193;
+}
+
+.student-fee-card strong{
+    font-size:15px;
+}
+
+.student-fee-card small{
+    color:#6b7280;
+}
+
+/* ===== STATUS ===== */
+.status-paid{
+    color:#16a34a;
+    font-weight:600;
+}
+
+.status-expired,
+.status-unpaid{
+    color:#dc2626;
+    font-weight:600;
+}
+
+/* ===== FORM ===== */
+.student-fee-card form{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.student-fee-card select,
+.student-fee-card input{
+    padding:8px 10px;
+    border-radius:8px;
+    border:1px solid #0847a5;
+    font-size:13px;
+}
+
+/* ===== MOBILE RESPONSIVE ===== */
+@media(max-width:768px){
+
+    .dashboard-title{
+        font-size:18px;
+    }
+
+    .stat-card{
+        padding:20px;
+    }
+
+    .stat-card p{
+        font-size:24px;
+    }
+
+    .section-box{
+        padding:20px;
+    }
+
+    .quick-actions{
+        flex-direction:column;
+    }
+
+    .quick-actions a,
+    .quick-actions button{
+        width:100%;
+    }
+
+    .student-fee-card{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .view-expense-btn{
+        width:100%;
+        text-align:center;
+    }
+}
+</style>
+
+<h2 class="dashboard-title">📊 Admin Dashboard</h2>
+
+<!-- ===== STATS ===== -->
+<div class="stats-grid">
+
+    <div class="stat-card">
+        <h3>👨‍🎓 Total Students</h3>
+        <p>{{ total_students }}</p>
+    </div>
+
+    <div class="stat-card active-card"
+         onclick="window.location.href='/admin/today-attendance'">
+        <h3>📅 Today Attendance</h3>
+        <p>{{ today_attendance }}</p>
+    </div>
+
+</div>
+
+<!-- ===== QR ===== -->
+<div class="section-box">
+
+    <h3>📷 Attendance QR Code</h3>
+
+    {% if qr %}
+        <p style="margin:10px 0;color:#6b7280;">Active QR Code</p>
+
+        <img id="qrImage"
+             src="{{ url_for('static', filename='qr_codes/permanent_qr.png') }}"
+             style="width:200px;border-radius:14px;border:1px solid #ddd;padding:10px;">
+
+    {% else %}
+        <p>No active QR found</p>
+    {% endif %}
+
+    <br><br>
+
+    <a href="{{ url_for('generate_qr') }}">
+        <button class="primary-btn">🔁 Generate New QR</button>
+    </a>
+
+    <br><br>
+
+    <button class="primary-btn" onclick="downloadQR()">
+        ⬇ Download QR Code
+    </button>
+</div>
+
+<!-- ===== QUICK ACTION ===== -->
+<div class="quick-actions">
+
+    <a href="{{ url_for('admin_register') }}">
+        <button class="primary-btn">➕ Register New Student</button>
+    </a>
+
+    <a href="{{ url_for('manage_students') }}">
+        <button class="primary-btn">👨‍🎓 Manage Students</button>
+    </a>
+
+    <a href="{{ url_for('leaderboard') }}">
+        <button class="primary-btn">🏆 View Leaderboard</button>
+    </a>
+
+    <a href="{{ url_for('add_expense') }}">
+        <button class="primary-btn">💼 Manage Expenses</button>
+    </a>
+
+</div>
+
+<!-- ===== EXPENSE SUMMARY ===== -->
+<div class="section-box">
+
+    <h3>💼 Expense Overview</h3>
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+            <h3>📅 Today Expense</h3>
+            <p>₹ {{ today_expense }}</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>📆 This Month</h3>
+            <p>₹ {{ month_expense }}</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>📊 Total Expense</h3>
+            <p>₹ {{ total_expense }}</p>
+        </div>
+
+    </div>
+        <a href="{{ url_for('expense_list') }}" class="view-expense-btn">
+            View All Expenses →
+        </a>
+    <br>
+
+</div>
+
+<!-- 🔍 SEARCH -->
+<div class="section-box">
+
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+        <h3 style="margin:0;color:#4f46e5;">💳 STUDENT FEE CARD</h3>
+
+        <form method="GET" style="display:flex; gap:10px; align-items:center;">
+            <input type="text"
+                   name="admission_number"
+                   placeholder="🔍 Search by Admission No"
+                   value="{{ request.args.get('admission_number','') }}"
+                   style="padding:10px;border-radius:8px;border:1px solid #4f46e5 ;">
+
+            <button type="submit" class="primary-btn">Search</button>
+        </form>
+    </div>
+
+</div>
+
+<!-- ===== FEE ===== -->
+<div class="section-box">
+
+    <h3>💰 Fee Management</h3>
+
+    {% if students %}
+        {% for student in students %}
+        {% set fee_status, remaining_days, due_amount, paid_amount, advance_month = get_fee_status(student.id) %}
+
+        <div class="student-fee-card">
+
+            <div>
+                <strong>{{ student.name }}</strong><br>
+                <small>Admission No: {{ student.admission_number }}</small><br>
+
+                {% if fee_status == "paid" %}
+                    <span class="status-paid">✅ Paid ({{ remaining_days }} days left)</span>
+                {% elif fee_status == "advance" %}
+                    <span class="status-paid">💙 Advance Paid for {{ advance_month }}</span>
+                {% elif fee_status == "due" %}
+                    <span class="status-unpaid">
+                        ⚠ Partial Paid<br>
+                        Paid ₹{{ paid_amount }} | Due ₹{{ due_amount }}
+                    </span>
+                {% else %}
+                    <span class="status-unpaid">❌ Fee Not Paid</span>
+                {% endif %}
+            </div>
+
+            <form method="POST" action="{{ url_for('mark_fee', student_id=student.id) }}">
+                <select name="month" required>
+                    <option value="">Month</option>
+                    {% for m in range(1,13) %}
+                        <option value="{{ m }}">{{ m }}</option>
+                    {% endfor %}
+                </select>
+
+                <!-- ✅ DYNAMIC YEAR (NO BACKEND CHANGE) -->
+                <select name="year" class="yearSelect" required>
+                    <option value="">Year</option>
+                </select>
+
+                <input type="number" name="amount" placeholder="Amount" required>
+
+                <button type="submit" class="success-btn">Mark Paid</button>
+            </form>
+
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>No students found.</p>
+    {% endif %}
+
+</div>
+
+<!-- ✅ YEAR AUTO-GENERATE SCRIPT -->
+<script>
+    document.querySelectorAll(".yearSelect").forEach(select => {
+        const currentYear = new Date().getFullYear();
+        for (let y = currentYear - 1; y <= currentYear + 20; y++) {
+            const option = document.createElement("option");
+            option.value = y;
+            option.textContent = y;
+            select.appendChild(option);
+        }
+    });
+</script>
+<script>
+function downloadQR(){
+    const img = document.getElementById("qrImage");
+
+    if(!img){
+        alert("QR Code not found");
+        return;
+    }
+
+    const link = document.createElement("a");
+    link.href = img.src;
+    link.download = "Roushan-Reading-Room-QR.png";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+</script>
+
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+/* PAGE */
+.notify-wrap{
+    max-width:800px;
+    margin:40px auto;
+    padding:20px;
+}
+
+/* TITLE */
+.notify-title{
+    text-align:center;
+    font-size:24px;
+    font-weight:600;
+    color:#111827;
+    margin-bottom:25px;
+}
+
+/* CARD */
+.notify-card{
+    background:white;
+    padding:18px 22px;
+    margin-bottom:15px;
+    border-radius:14px;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+    display:flex;
+    gap:15px;
+    align-items:flex-start;
+    border-left:5px solid #4f46e5;
+    transition:.3s;
+}
+
+.notify-card:hover{
+    transform:translateY(-3px);
+}
+
+/* ICON */
+.notify-icon{
+    font-size:22px;
+    margin-top:2px;
+}
+
+/* CONTENT */
+.notify-content p{
+    margin:0;
+    font-size:15px;
+    color:#1f2937;
+}
+.notify-content small{
+    display:block;
+    margin-top:6px;
+    color:#6b7280;
+    font-size:13px;
+}
+
+/* EMPTY */
+.notify-empty{
+    text-align:center;
+    padding:30px;
+    color:#6b7280;
+    font-style:italic;
+    background:white;
+    border-radius:14px;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+</style>
+
+<div class="notify-wrap">
+
+    <h2 class="notify-title">🔔 Notifications</h2>
+
+    {% if notifications %}
+        {% for n in notifications %}
+        <div class="notify-card">
+            <div class="notify-icon">📢</div>
+            <div class="notify-content">
+                <p>{{ n.message }}</p>
+                <small>{{ n.date }}</small>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="notify-empty">
+            No notifications available
+        </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}

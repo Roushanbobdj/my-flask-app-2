@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+.notify-wrap{
+    max-width:650px;
+    margin:70px auto;
+    padding:0 15px;
+}
+
+.notify-card{
+    background:#ffffff;
+    padding:35px 30px;
+    border-radius:16px;
+    box-shadow:0 18px 40px rgba(0,0,0,.08);
+}
+
+.notify-card h2{
+    text-align:center;
+    margin-bottom:25px;
+    font-size:22px;
+    font-weight:600;
+    color:#111827;
+}
+
+.form-group{
+    margin-bottom:18px;
+}
+
+.form-group label{
+    font-size:14px;
+    font-weight:500;
+    color:#374151;
+    display:block;
+    margin-bottom:6px;
+}
+
+.form-group textarea{
+    width:100%;
+    height:130px;
+    padding:12px 14px;
+    border-radius:10px;
+    border:1px solid #e5e7eb;
+    font-size:14px;
+    resize:none;
+    outline:none;
+    transition:0.2s;
+}
+
+.form-group textarea:focus{
+    border-color:#2563eb;
+    box-shadow:0 0 0 3px rgba(37,99,235,.1);
+}
+
+.notify-btn{
+    width:100%;
+    padding:12px;
+    background:#2563eb;
+    color:white;
+    border:none;
+    border-radius:10px;
+    font-size:15px;
+    font-weight:500;
+    cursor:pointer;
+    transition:0.25s;
+}
+
+.notify-btn:hover{
+    background:#1e40af;
+}
+</style>
+
+<div class="notify-wrap">
+    <div class="notify-card">
+
+        <h2>📢 Send Notification</h2>
+
+        <form method="POST">
+
+            <div class="form-group">
+                <label for="message">Notification Message</label>
+                <textarea
+                    id="message"
+                    name="message"
+                    placeholder="Type your notification message here..."
+                    required></textarea>
+            </div>
+
+            <button type="submit" class="notify-btn">
+                Send Notification
+            </button>
+
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}
