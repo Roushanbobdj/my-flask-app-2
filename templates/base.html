@@ -14,7 +14,7 @@
     <link rel="icon" type="image/png" href="/static/favicon.png">
     <link rel="apple-touch-icon" href="/static/icons/icon-192.png">
 
-    <!-- BASE STYLE -->
+    <!-- ================= BASE STYLE ================= -->
     <style>
         *{
             margin:0;
@@ -28,13 +28,12 @@
             min-height:100vh;
         }
 
-        /* ===== BODY LOCK WHEN SIDEBAR OPEN (MOBILE) ===== */
         body.sidebar-open{
             overflow:hidden;
             height:100vh;
         }
 
-        /* ===== SIDEBAR ===== */
+        /* ================= SIDEBAR ================= */
         .sidebar{
             width:250px;
             background:linear-gradient(180deg,#1e3a8a,#020617);
@@ -44,11 +43,8 @@
             left:0;
             top:0;
             padding-top:50px;
-
-            /* 🔥 IMPORTANT FIX */
             display:flex;
             flex-direction:column;
-
             transition:.3s ease;
             z-index:1000;
         }
@@ -82,9 +78,8 @@
             border-left:4px solid #60a5fa;
         }
 
-        /* ===== SIDEBAR FOOTER (PERFECT FIX) ===== */
         .sidebar-footer{
-            margin-top:auto;          /* 🔥 footer bottom push */
+            margin-top:auto;
             padding:15px 0;
             text-align:center;
             font-size:13px;
@@ -98,7 +93,7 @@
             color:#ffffff;
         }
 
-        /* ===== MAIN ===== */
+        /* ================= MAIN ================= */
         .main{
             margin-left:250px;
             padding:20px;
@@ -109,14 +104,16 @@
             margin-left:0;
         }
 
-        /* ===== TOPBAR ===== */
+        /* ================= TOPBAR ================= */
         .topbar{
             background:white;
             padding:14px 18px;
             border-radius:14px;
             display:flex;
-            justify-content:space-between;
             align-items:center;
+            justify-content:space-between;
+            gap:12px;
+            flex-wrap:wrap;
             box-shadow:0 10px 25px rgba(0,0,0,.08);
             margin-bottom:20px;
         }
@@ -125,6 +122,12 @@
             display:flex;
             align-items:center;
             gap:12px;
+        }
+
+        .topbar-right{
+            display:flex;
+            align-items:center;
+            gap:16px;
         }
 
         .menu-btn{
@@ -143,7 +146,7 @@
             cursor:pointer;
         }
 
-        /* ===== DARK MODE ===== */
+        /* ================= DARK MODE ================= */
         .dark-mode{
             background:#020617;
             color:white;
@@ -157,12 +160,12 @@
             background:#020617;
         }
 
-        /* ===== CLOSE BUTTON ===== */
+        /* ================= CLOSE BTN ================= */
         .close-btn{
             display:none;
         }
 
-        /* ===== MOBILE RESPONSIVE ===== */
+        /* ================= MOBILE ================= */
         @media(max-width:768px){
 
             body{
@@ -182,12 +185,14 @@
                 padding:15px;
             }
 
-            .topbar h3{
-                font-size:14px;
+            .topbar{
+                flex-direction:column;
+                align-items:flex-start;
             }
 
-            .menu-btn{
-                font-size:26px;
+            .topbar-right{
+                width:100%;
+                justify-content:space-between;
             }
 
             .close-btn{
@@ -200,10 +205,8 @@
                 color:white;
                 font-size:22px;
                 cursor:pointer;
-                z-index:1100;
             }
 
-            /* 🔥 FOOTER MOBILE SAFE */
             .sidebar-footer{
                 font-size:12px;
                 padding-bottom:12px;
@@ -211,7 +214,6 @@
         }
     </style>
 </head>
-
 <body>
 
 {% if current_user.is_authenticated %}
@@ -238,24 +240,18 @@
         <a href="{{ url_for('leaderboard') }}">🏆 Leaderboard</a>
     {% endif %}
 
-    <!-- ===== SOCIAL MEDIA ===== -->
     <div style="margin-top:25px;">
         <h4 style="text-align:center;font-size:13px;letter-spacing:1px;opacity:.7;margin-bottom:10px;">
             SOCIAL MEDIA
         </h4>
 
-        <!-- ✅ ADMIN MANAGE LINK (NEW ADD) -->
-        {% if current_user.is_authenticated and current_user.role == "admin" %}
-        <a href="{{ url_for('manage_social_links') }}">
-            🌐 Manage Social Media
-        </a>
+        {% if current_user.role == "admin" %}
+        <a href="{{ url_for('manage_social_links') }}">🌐 Manage Social Media</a>
         {% endif %}
 
-        <!-- ✅ SOCIAL LINKS (CLICKABLE WHEN ADDED IN DB) -->
         {% for link in social_links %}
             <a href="{{ link.url }}" target="_blank" rel="noopener">
-                <span>{{ link.icon }}</span>
-                {{ link.name }}
+                <span>{{ link.icon }}</span> {{ link.name }}
             </a>
         {% endfor %}
     </div>
@@ -271,38 +267,41 @@
 <div class="main" id="main">
 
 {% if current_user.is_authenticated %}
-    <div class="topbar">
-        <div class="topbar-left">
-            <button class="menu-btn" onclick="toggleSidebar()">☰</button>
-            <h3>Welcome, {{ current_user.name }}</h3>
-        </div>
-        <!-- 🔔 ADMIN SUPPORT BELL -->
+<div class="topbar">
+
+    <div class="topbar-left">
+        <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+        <h3>Welcome, {{ current_user.name }}</h3>
+    </div>
+
+    <div class="topbar-right">
+
         {% if current_user.role == "admin" %}
-        <div style="position:relative; margin-right:12px; margin-left:600px;">
-            <a href="{{ url_for('admin_support') }}"
-               onclick="clearBell()"
-               style="font-size:22px; text-decoration:none;">
-                🔔
-               {% if unread_count > 0 %}
-               <span id="bellCount"
-                     style="
-                       position:absolute;
-                       top:-6px;
-                       right:-8px;
-                       background:red;
-                       color:white;
-                       font-size:12px;
-                       padding:2px 6px;
-                       border-radius:50%;
-                     ">
-                   {{ unread_count }}
-               </span>
-              {% endif %}
-          </a>
-      </div>
-      {% endif %}        
+        <a href="{{ url_for('admin_support') }}"
+           onclick="clearBell()"
+           style="font-size:22px; text-decoration:none; position:relative;">
+            🔔
+            {% if unread_count > 0 %}
+            <span id="bellCount"
+                  style="
+                  position:absolute;
+                  top:-6px;
+                  right:-8px;
+                  background:red;
+                  color:white;
+                  font-size:12px;
+                  padding:2px 6px;
+                  border-radius:50%;">
+                {{ unread_count }}
+            </span>
+            {% endif %}
+        </a>
+        {% endif %}
+
         <button class="dark-btn" onclick="toggleDarkMode()">🌙</button>
     </div>
+
+</div>
 {% endif %}
 
 {% block content %}{% endblock %}
@@ -327,33 +326,22 @@ function toggleDarkMode(){
     document.body.classList.toggle("dark-mode");
 }
 
-const links = document.querySelectorAll(".sidebar a");
-const currentPath = window.location.pathname;
-
-links.forEach(link => {
-    if(link.getAttribute("href") === currentPath){
+document.querySelectorAll(".sidebar a").forEach(link=>{
+    if(link.getAttribute("href") === window.location.pathname){
         link.classList.add("active");
     }
 });
-</script>
-<script>
+
 function clearBell(){
-    fetch("/admin/clear-bell", { method:"POST" });
-    let badge = document.getElementById("bellCount");
-    if(badge){
-        badge.remove();
-    }
+    fetch("/admin/clear-bell",{method:"POST"});
+    const badge=document.getElementById("bellCount");
+    if(badge){ badge.remove(); }
+}
+
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/static/sw.js");
 }
 </script>
-<script>
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("/static/sw.js")
-      .then(() => console.log("SW registered"))
-      .catch(err => console.log("SW error", err));
-  }
-</script>
+
 </body>
 </html>
-
-
-
