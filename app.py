@@ -147,9 +147,6 @@ class SocialLink(db.Model):
 # -------------------------
 # LOGIN MANAGER
 # -------------------------
-with app.app_context():
-    db.create_all()
-    create_default_admin()
     
 @login_manager.user_loader
 def load_user(user_id):
@@ -1126,4 +1123,5 @@ if __name__ == "__main__":
     import os
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port, debug=False)  
+
 
