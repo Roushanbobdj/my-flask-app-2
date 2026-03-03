@@ -49,9 +49,27 @@ def save_and_compress_image(file, filename):
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY","dev-secret")
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///library.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+import os
 
+database_url = os.environ.get("DATABASE_URL")
+
+if not database_url:
+    raise RuntimeError("DATABASE_URL is not set")
+
+# 🔧 Fix Render postgres scheme
+if database_url.startswith("postgres://"):
+    database_url = database_url.replace(
+        "postgres://", "postgresql://", 1
+    )
+
+app.config["SQLALCHEMY_DATABASE_URI"] = database_url
+
+# 🔐 PostgreSQL SSL (Render recommended)
+app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
+    "connect_args": {"sslmode": "require"}
+}
+
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 login_manager.init_app(app)
@@ -1137,12 +1155,14 @@ def admin_seats():
 # -------------------------
 # DB INIT (FIRST DEPLOY ONLY)
 # -------------------------
-with app.app_context():
-    db.create_all()
-    create_default_admin()
+if os.environ.get("FLASK_ENV") == "development":
+    with app.app_context():
+        db.create_all()
+        create_default_admin()
 
 
 # -------------------------
 # RUN APP
 # -------------------------
+
 
