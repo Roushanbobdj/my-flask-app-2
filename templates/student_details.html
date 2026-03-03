@@ -140,11 +140,7 @@ h2{
 
     <div class="student-profile">
 
-        {% if student.photo %}
-            <img src="{{ url_for('static', filename='uploads/' ~ student.photo) }}">
-        {% else %}
-            <img src="{{ url_for('static', filename='default.png') }}">
-        {% endif %}
+        <img src="{{ student.photo if student.photo else url_for('static', filename='default.png') }}">
 
         <div class="student-info">
 
@@ -198,5 +194,6 @@ h2{
 </div>
 
 {% endif %}
+
 
 {% endblock %}
