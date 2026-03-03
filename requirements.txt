@@ -7,3 +7,4 @@ pillow
 gunicorn
 pandas
 psycopg2-binary
+cloudinary
