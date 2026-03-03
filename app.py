@@ -129,6 +129,7 @@ class Ticket(db.Model):
     subject = db.Column(db.String(200))
     message = db.Column(db.Text)
     reply = db.Column(db.Text, nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
     is_read = db.Column(db.Boolean, default=False) 
     date = db.Column(db.String(50), default=str(datetime.now()))
 
@@ -1165,5 +1166,6 @@ def admin_seats():
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
+
 
 
