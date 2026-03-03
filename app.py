@@ -1,7 +1,8 @@
+import cloudinary
+import cloudinary.uploader
 import logging
 logging.basicConfig(level=logging.INFO)
 from flask import Flask, render_template, redirect, url_for, request, flash, jsonify
-from werkzeug.utils import secure_filename
 import pandas as pd
 from flask import send_file
 from flask_sqlalchemy import SQLAlchemy
@@ -15,34 +16,11 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timedelta
 import qrcode
 import os
+cloudinary.config(
+    cloudinary_url=os.environ.get("CLOUDINARY_URL")
+)
 import uuid
-from PIL import Image
 
-UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), "static", "uploads")
-MAX_IMAGE_SIZE_KB = 200
-
-
-def save_and_compress_image(file, filename):
-    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
-    try:
-        image = Image.open(file).convert("RGB")
-    except Exception:
-        raise ValueError("Invalid image file")
-
-    # 🔹 resize (max 800x800)
-    image.thumbnail((800, 800))
-
-    filepath = os.path.join(UPLOAD_FOLDER, filename)
-
-    quality = 85
-    while True:
-        image.save(filepath, format="JPEG", quality=quality, optimize=True)
-        if os.path.getsize(filepath) / 1024 <= MAX_IMAGE_SIZE_KB or quality <= 30:
-            break
-        quality -= 5
-
-    return filename
 # -------------------------
 # APP CONFIG
 # -------------------------
@@ -197,6 +175,19 @@ def get_student_fee_summary(student_id):
         )
 
     return total_paid, last_payment
+    
+def upload_image_to_cloudinary(file):
+    result = cloudinary.uploader.upload(
+        file,
+        folder="students",
+        resource_type="image",
+        transformation=[
+            {"width": 800, "height": 800, "crop": "limit"},
+            {"quality": "auto"},
+            {"fetch_format": "auto"}
+        ]
+    )
+    return result["secure_url"]
 # -------------------------
 # AUTH ROUTES
 # -------------------------
@@ -262,13 +253,11 @@ def admin_register():
                 return redirect(url_for("admin_register"))
 
         # 📸 PHOTO UPLOAD + COMPRESS (FIXED)
-        photo_filename = None
+        photo_url = None
         photo = request.files.get("photo")
 
         if photo and photo.filename:
-            ext = photo.filename.rsplit(".", 1)[-1].lower()
-            unique_name = f"{uuid.uuid4().hex}.{ext}"
-            photo_filename = save_and_compress_image(photo, unique_name)
+            photo_url = upload_image_to_cloudinary(photo)
 
         # ✅ CREATE STUDENT (OLD CODE SAFE)
         student = Student(
@@ -283,7 +272,7 @@ def admin_register():
             timing_to=request.form.get("timing_to"),
             monthly_fee=int(request.form.get("monthly_fee") or 0),
             seat_number=request.form.get("seat_number") or "",
-            photo=photo_filename
+            photo=photo_url
         )
 
         try:
@@ -807,9 +796,7 @@ def admin_view_student_profile(student_id):
         # photo update
         photo = request.files.get("photo")
         if photo and photo.filename:
-            filename = f"{student.admission_number}.jpg"
-            filename = save_and_compress_image(photo, filename)
-            student.photo = filename
+            student.photo = upload_image_to_cloudinary(photo)
 
         db.session.commit()
         flash("Student profile updated successfully")
@@ -995,14 +982,9 @@ def profile():
 
             # 🔴 ADD: OLD PHOTO DELETE (AUTO CLEAN)
             if student.photo:
-                old_path = os.path.join(UPLOAD_FOLDER, student.photo)
-                if os.path.exists(old_path):
-                    os.remove(old_path)
-
-            # 🔵 EXISTING + SAFE
-            filename = f"{student.admission_number}.jpg"
-            filename = save_and_compress_image(photo, filename)
-            student.photo = filename
+                photo = request.files.get("photo")
+                if photo and photo.filename:
+                    student.photo = upload_image_to_cloudinary(photo)
 
         # 🔐 ADMIN EXTRA CONTROLS (UNCHANGED)
         if current_user.role == "admin":
@@ -1145,7 +1127,10 @@ def admin_seats():
     return render_template(
         "admin_seats.html",
         students=students
-    )   
+    )
+@app.route("/test-cloudinary")
+def test_cloudinary():
+    return cloudinary.config().cloud_name
 # -------------------------
 # DB INIT (FIRST DEPLOY ONLY)
 # -------------------------
@@ -1162,6 +1147,7 @@ import os
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
+
 
 
 
