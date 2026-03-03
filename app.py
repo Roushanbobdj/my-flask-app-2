@@ -1116,7 +1116,24 @@ def clear_bell():
         .update({Ticket.is_read: True})
     db.session.commit()
     return "", 204
-    
+@app.route("/admin/seats")
+@login_required
+def admin_seats():
+
+    # 🔐 Only admin allowed
+    if current_user.role != "admin":
+        return redirect(url_for("student_dashboard"))
+
+    # 🪑 Only students jinhone seat li hai
+    students = Student.query.filter(
+        Student.seat_number != None,
+        Student.seat_number != ""
+    ).order_by(Student.seat_number).all()
+
+    return render_template(
+        "admin_seats.html",
+        students=students
+    )   
 # -------------------------
 # DB INIT (FIRST DEPLOY ONLY)
 # -------------------------
@@ -1131,6 +1148,7 @@ with app.app_context():
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port, debug=False)  
+
 
 
 
