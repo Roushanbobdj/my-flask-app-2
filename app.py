@@ -1120,9 +1120,6 @@ def clear_bell():
 # RUN APP
 # -------------------------
 if __name__ == "__main__":
-    with app.app_context():
-        print("🔥 APP CONTEXT STARTED")
-        db.create_all()
-        create_default_admin()
-
-    app.run(debug=True, use_reloader=False)  
+    import os
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=False)  
