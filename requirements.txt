@@ -6,3 +6,4 @@ qrcode
 pillow
 gunicorn
 pandas
+psycopg2-binary
