@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+/* ===== Container ===== */
+.seat-container{
+    max-width:1000px;
+    margin:auto;
+    padding:10px;
+}
+
+/* ===== Heading ===== */
+.seat-title{
+    font-size:22px;
+    font-weight:700;
+    margin-bottom:16px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+/* ===== Table ===== */
+.table-responsive{
+    width:100%;
+    overflow-x:auto;
+    background:white;
+    border-radius:10px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+
+.seat-table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:700px;
+}
+
+.seat-table thead{
+    background:#1f2937;
+    color:#fff;
+}
+
+.seat-table th,
+.seat-table td{
+    padding:14px 12px;
+    text-align:center;
+    font-size:14px;
+    border-bottom:1px solid #e5e7eb;
+}
+
+.seat-table tbody tr:hover{
+    background:#f9fafb;
+}
+
+/* ===== Badges ===== */
+.badge-booked{
+    background:#22c55e;
+    color:white;
+    padding:6px 14px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:600;
+}
+
+/* ===== Mobile Cards ===== */
+.mobile-card{
+    display:none;
+    background:white;
+    border-radius:10px;
+    padding:14px;
+    margin-bottom:12px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+
+.mobile-row{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:6px;
+    font-size:14px;
+}
+
+.mobile-label{
+    font-weight:600;
+    color:#374151;
+}
+
+/* ===== Responsive ===== */
+@media(max-width:768px){
+    .seat-table{
+        display:none;
+    }
+    .mobile-card{
+        display:block;
+    }
+}
+</style>
+
+<div class="seat-container">
+
+    <div class="seat-title">🪑 Seat Reservation Status</div>
+
+    <!-- ===== Desktop Table ===== -->
+    <div class="table-responsive">
+        <table class="seat-table">
+            <thead>
+                <tr>
+                    <th>Seat No</th>
+                    <th>Student Name</th>
+                    <th>Admission No</th>
+                    <th>Timing</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in students %}
+                <tr>
+                    <td><strong>{{ s.seat_number }}</strong></td>
+                    <td>{{ s.name }}</td>
+                    <td>{{ s.admission_number }}</td>
+                    <td>{{ s.timing_from }} – {{ s.timing_to }}</td>
+                    <td><span class="badge-booked">Booked</span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ===== Mobile Cards ===== -->
+    {% for s in students %}
+    <div class="mobile-card">
+        <div class="mobile-row">
+            <span class="mobile-label">Seat No</span>
+            <strong>{{ s.seat_number }}</strong>
+        </div>
+        <div class="mobile-row">
+            <span class="mobile-label">Name</span>
+            <span>{{ s.name }}</span>
+        </div>
+        <div class="mobile-row">
+            <span class="mobile-label">Admission</span>
+            <span>{{ s.admission_number }}</span>
+        </div>
+        <div class="mobile-row">
+            <span class="mobile-label">Timing</span>
+            <span>{{ s.timing_from }} – {{ s.timing_to }}</span>
+        </div>
+        <div class="mobile-row">
+            <span class="mobile-label">Status</span>
+            <span class="badge-booked">Booked</span>
+        </div>
+    </div>
+    {% endfor %}
+
+    {% if not students %}
+        <p style="margin-top:20px;color:#dc2626;font-weight:600;">
+            No seat reservations found.
+        </p>
+    {% endif %}
+
+</div>
+
+{% endblock %}
