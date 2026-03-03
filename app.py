@@ -17,7 +17,10 @@ from datetime import datetime, timedelta
 import qrcode
 import os
 cloudinary.config(
-    cloudinary_url=os.environ.get("CLOUDINARY_URL")
+    cloud_name=os.environ.get("CLOUDINARY_CLOUD_NAME"),
+    api_key=os.environ.get("CLOUDINARY_API_KEY"),
+    api_secret=os.environ.get("CLOUDINARY_API_SECRET"),
+    secure=True
 )
 import uuid
 
@@ -1147,6 +1150,7 @@ import os
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
+
 
 
 
