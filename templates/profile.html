@@ -238,12 +238,10 @@ textarea{
 
     <!-- HEADER -->
     <div class="profile-header">
-        {% set profile_photo = student.photo if student.photo else 'default.png' %}
-
         <img
             class="profile-avatar"
-            src="{{ url_for('static', filename='uploads/' + profile_photo if student.photo else 'default.png') }}"
-            onerror="this.onerror=null;this.src='/static/default.png';"
+            src="{{ student.photo if student.photo else url_for('static', filename='default.png') }}"
+            alt="Student Photo"
         />
     
 
@@ -415,4 +413,5 @@ textarea{
     </div>
 </div> 
 {% endblock %}
+
 
