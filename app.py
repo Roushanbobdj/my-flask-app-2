@@ -47,20 +47,16 @@ app.config["SQLALCHEMY_DATABASE_URI"] = database_url
 
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=365)
 
-# 🔥 REMEMBER COOKIE FIX
 app.config['REMEMBER_COOKIE_DURATION'] = timedelta(days=365)
-app.config['REMEMBER_COOKIE_SECURE'] = True      # HTTPS (Render)
+app.config['REMEMBER_COOKIE_SECURE'] = True
 app.config['REMEMBER_COOKIE_HTTPONLY'] = True
 
-# 🔥 SESSION COOKIE FIX
-app.config['SESSION_COOKIE_SECURE'] = True       # HTTPS
-app.config['SESSION_COOKIE_SAMESITE'] = "None"   # Mobile + PWA fix
+app.config['SESSION_COOKIE_SECURE'] = True
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config['SESSION_COOKIE_SAMESITE'] = "None"
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config.update(
-    SESSION_COOKIE_HTTPONLY=True,
-    SESSION_COOKIE_SAMESITE="Lax"
-)
+
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 login_manager.init_app(app)
@@ -1167,6 +1163,7 @@ import os
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
+
 
 
 
