@@ -5,6 +5,7 @@ logging.basicConfig(level=logging.INFO)
 from flask import Flask, render_template, redirect, url_for, request, flash, jsonify
 import pandas as pd
 from flask import send_file
+from flask import session
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError
 from flask_login import (
@@ -44,7 +45,12 @@ if database_url.startswith("postgres://"):
 
 app.config["SQLALCHEMY_DATABASE_URI"] = database_url
 
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=30)
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config.update(
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE="Lax"
+)
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 login_manager.init_app(app)
@@ -209,7 +215,7 @@ def login():
             if not user.is_active:
                 flash("Your account is blocked by admin")
                 return redirect(url_for("login"))
-            login_user(user)
+            login_user(user, remember=True)
             return redirect(url_for(f"{user.role}_dashboard"))
         flash("Invalid Credentials")
     return render_template("login.html")
@@ -304,6 +310,10 @@ def inject_unread_count():
         count = Ticket.query.filter_by(is_read=False).count()
         return dict(unread_count=count)
     return dict(unread_count=0)
+
+@app.before_request
+def make_session_permanent():
+    session.permanent = True
 # -------------------------
 # ADMIN EDIT STUDENT PROFILE
 # -------------------------
@@ -1147,6 +1157,7 @@ import os
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
+
 
 
 
