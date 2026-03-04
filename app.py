@@ -47,16 +47,20 @@ app.config["SQLALCHEMY_DATABASE_URI"] = database_url
 
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=365)
 
+app.config['REMEMBER_COOKIE_NAME'] = "remember_token"
 app.config['REMEMBER_COOKIE_DURATION'] = timedelta(days=365)
 app.config['REMEMBER_COOKIE_SECURE'] = True
 app.config['REMEMBER_COOKIE_HTTPONLY'] = True
 
+app.config['SESSION_COOKIE_SAMESITE'] = "None"
 app.config['SESSION_COOKIE_SECURE'] = True
 app.config['SESSION_COOKIE_HTTPONLY'] = True
-app.config['SESSION_COOKIE_SAMESITE'] = "None"
+app.config['SESSION_COOKIE_NAME'] = "myapp_session"
+
 app.config['SESSION_REFRESH_EACH_REQUEST'] = False
 app.config['REMEMBER_COOKIE_REFRESH_EACH_REQUEST'] = False
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config['REMEMBER_COOKIE_SAMESITE'] = "None"
 
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
@@ -210,6 +214,8 @@ def upload_image_to_cloudinary(file):
 
 @app.route("/")
 def home():
+    if current_user.is_authenticated:
+        return redirect(url_for(f"{current_user.role}_dashboard"))
     return redirect(url_for("login"))
 
 @app.route("/login", methods=["GET", "POST"])
@@ -222,12 +228,13 @@ def login():
             if not user.is_active:
                 flash("Your account is blocked by admin")
                 return redirect(url_for("login"))
+
             login_user(
                 user,
                 remember=True,
-                duration=timedelta(days=365),
-                force=True
+                duration=timedelta(days=365)
             )
+            
             return redirect(url_for(f"{user.role}_dashboard"))
         flash("Invalid Credentials")
     return render_template("login.html")
@@ -236,7 +243,7 @@ def login():
 @login_required
 def logout():
     logout_user()
-    session.clear()   # 🔥 ADD THIS
+    session.pop('_flashes', None)
     return redirect(url_for("login"))
 
 # -------------------------
@@ -1170,4 +1177,5 @@ import os
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
+
 
