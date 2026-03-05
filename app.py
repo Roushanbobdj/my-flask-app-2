@@ -1166,6 +1166,12 @@ from flask import send_from_directory
 @app.route('/firebase-messaging-sw.js')
 def firebase_sw():
     return send_from_directory('static', 'firebase-messaging-sw.js')
+
+@app.route("/save-token", methods=["POST"])
+def save_token():
+    token = request.json.get("token")
+    print("TOKEN RECEIVED:", token)
+    return jsonify({"status": "saved"})
 # -------------------------
 # DB INIT (FIRST DEPLOY ONLY)
 # -------------------------
@@ -1182,6 +1188,7 @@ import os
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
+
 
 
 
