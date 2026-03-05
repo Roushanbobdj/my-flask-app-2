@@ -13,6 +13,8 @@
     <meta name="theme-color" content="#0d6efd">
     <link rel="icon" type="image/png" href="/static/favicon.png">
     <link rel="apple-touch-icon" href="/static/icons/icon-192.png">
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js"></script>
 
     <!-- ================= BASE STYLE ================= -->
     <style>
@@ -379,6 +381,42 @@ function toggleDarkMode(){
 }
 
 </script>
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js";
+
+const firebaseConfig = {
+  apiKey: "PASTE API KEY",
+  authDomain: "PASTE AUTH DOMAIN",
+  projectId: "PASTE PROJECT ID",
+  storageBucket: "PASTE BUCKET",
+  messagingSenderId: "PASTE SENDER ID",
+  appId: "PASTE APP ID"
+};
+
+const app = initializeApp(firebaseConfig);
+
+const messaging = getMessaging(app);
+
+Notification.requestPermission().then((permission) => {
+
+    if (permission === "granted") {
+
+        getToken(messaging, {
+            vapidKey: "PASTE VAPID KEY"
+        }).then((token) => {
+
+            console.log("TOKEN:", token);
+
+        });
+
+    }
+
+});
+
+</script>
 </body>
 </html>
+
 
