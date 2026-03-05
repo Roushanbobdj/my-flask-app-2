@@ -582,6 +582,12 @@ Notification.requestPermission().then((permission) => {
                     token: token
                 })
             });
+            fetch("https://iid.googleapis.com/iid/v1/" + token + "/rel/topics/all", {
+                method: "POST",
+                headers: {
+                    "Authorization": "BA3f2v6OKCkGwsrBYl7aEZf2xiDk1BMDj4-lM94zflwUn3yQ_K6LByt1pc_l2_JwzjINJwSfy2pTUF9ry0MlJDg"
+                }
+            });
 
         });
 
@@ -605,6 +611,7 @@ onMessage(messaging, (payload) => {
 </script>
 
 {% endblock %}
+
 
 
 
