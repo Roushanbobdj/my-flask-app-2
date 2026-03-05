@@ -1163,15 +1163,31 @@ def admin_seats():
     )
 from flask import send_from_directory
 
-@app.route('/firebase-messaging-sw.js')
-def firebase_sw():
-    return send_from_directory('static', 'firebase-messaging-sw.js')
+@app.route("/send_push", methods=["POST"])
+def send_push():
 
-@app.route("/save-token", methods=["POST"])
-def save_token():
-    token = request.json.get("token")
-    print("TOKEN RECEIVED:", token)
-    return jsonify({"status": "saved"})
+    title = request.form.get("title")
+    message = request.form.get("message")
+
+    url = "https://fcm.googleapis.com/fcm/send"
+
+    headers = {
+        "Authorization": BA3f2v6OKCkGwsrBYl7aEZf2xiDk1BMDj4-lM94zflwUn3yQ_K6LByt1pc_l2_JwzjINJwSfy2pTUF9ry0MlJDg,
+        "Content-Type": "application/json"
+    }
+
+    data = {
+        "to": "/topics/all",
+        "notification": {
+            "title": title,
+            "body": message,
+            "icon": "/static/icons/icon-192.png"
+        }
+    }
+
+    response = requests.post(url, headers=headers, json=data)
+
+    return response.text
 # -------------------------
 # DB INIT (FIRST DEPLOY ONLY)
 # -------------------------
@@ -1188,6 +1204,7 @@ import os
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
+
 
 
 
