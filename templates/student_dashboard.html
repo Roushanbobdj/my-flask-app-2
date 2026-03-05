@@ -549,7 +549,7 @@ if ('serviceWorker' in navigator) {
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js";
+import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBgNcTolAC58hxkPhwzUUkXf63vJ7ZREdI",
@@ -561,7 +561,6 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-
 const messaging = getMessaging(app);
 
 Notification.requestPermission().then((permission) => {
@@ -590,9 +589,23 @@ Notification.requestPermission().then((permission) => {
 
 });
 
+/* ⭐ FOREGROUND NOTIFICATION */
+
+onMessage(messaging, (payload) => {
+
+    console.log("Message received:", payload);
+
+    new Notification(payload.notification.title, {
+        body: payload.notification.body,
+        icon: "/static/icons/icon-192.png"
+    });
+
+});
+
 </script>
 
 {% endblock %}
+
 
 
 
