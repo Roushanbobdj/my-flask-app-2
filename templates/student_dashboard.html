@@ -535,6 +535,17 @@ window.onclick = function(event) {
     }
 }
 </script>
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register("/static/firebase-messaging-sw.js")
+  .then(function(registration) {
+      console.log("Service Worker Registered", registration);
+  })
+  .catch(function(err) {
+      console.log("Service Worker Error", err);
+  });
+}
+</script>
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -582,5 +593,6 @@ Notification.requestPermission().then((permission) => {
 </script>
 
 {% endblock %}
+
 
 
