@@ -13,8 +13,6 @@
     <meta name="theme-color" content="#0d6efd">
     <link rel="icon" type="image/png" href="/static/favicon.png">
     <link rel="apple-touch-icon" href="/static/icons/icon-192.png">
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js"></script>
 
     <!-- ================= BASE STYLE ================= -->
     <style>
@@ -350,8 +348,16 @@ function clearBell(){
     if(badge){ badge.remove(); }
 }
 
-if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("/static/sw.js");
+if ('serviceWorker' in navigator) {
+
+    navigator.serviceWorker.register('/static/sw.js')
+    .then(function(reg){
+        console.log("Service Worker Registered", reg);
+    })
+    .catch(function(error){
+        console.log("Service Worker Failed", error);
+    });
+
 }
 </script>
 <script>
@@ -387,12 +393,13 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js";
 
 const firebaseConfig = {
-  apiKey: "PASTE API KEY",
-  authDomain: "PASTE AUTH DOMAIN",
-  projectId: "PASTE PROJECT ID",
-  storageBucket: "PASTE BUCKET",
-  messagingSenderId: "PASTE SENDER ID",
-  appId: "PASTE APP ID"
+  apiKey: "AIzaSyBgNcTolAC58hxkPhwzUUkXf63vJ7ZREdI",
+  authDomain: "roushan-reading-room.firebaseapp.com",
+  projectId: "roushan-reading-room",
+  storageBucket: "roushan-reading-room.firebasestorage.app",
+  messagingSenderId: "483049478376",
+  appId: "1:483049478376:web:577fc54d967d53318f515d",
+  measurementId: "G-L3ZS66NXP8"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -404,7 +411,7 @@ Notification.requestPermission().then((permission) => {
     if (permission === "granted") {
 
         getToken(messaging, {
-            vapidKey: "PASTE VAPID KEY"
+            vapidKey: "ubJ78C2ehN2f85OfFaWaqfePNcGuIBmRDGduuZKlTlM"
         }).then((token) => {
 
             console.log("TOKEN:", token);
@@ -418,5 +425,6 @@ Notification.requestPermission().then((permission) => {
 </script>
 </body>
 </html>
+
 
 
