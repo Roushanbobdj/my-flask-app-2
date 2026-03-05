@@ -218,7 +218,7 @@
     <h2>🎓 Welcome, {{ student.name }}</h2>
 
     <a href="{{ url_for('notifications') }}" 
-       style="position:absolute; top:25px; right:25px; color:white; text-decoration:none; font-size:24px;">
+       style="position:absolute; top:25px; right:25px; color:white; text-decoration:none; font-size:24px; z-index:999;">
         🔔
         {% if unread_count > 0 %}
             <span style="background:red; color:white; border-radius:50%; padding:2px 8px; font-size:12px;">
@@ -582,4 +582,5 @@ Notification.requestPermission().then((permission) => {
 </script>
 
 {% endblock %}
+
 
