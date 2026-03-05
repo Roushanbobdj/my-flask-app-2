@@ -75,24 +75,26 @@
 
         <h2>📢 Send Notification</h2>
 
-        <form method="POST">
+        <form method="POST" action="/send_push">
 
             <div class="form-group">
-                <label for="message">Notification Message</label>
-                <textarea
-                    id="message"
-                    name="message"
-                    placeholder="Type your notification message here..."
-                    required></textarea>
+                <label>Title</label>
+                <input type="text" name="title" placeholder="Title" required>
+            </div>
+
+            <div class="form-group">
+                <label>Notification Message</label>
+                <textarea name="message" placeholder="Type your notification message here..." required></textarea>
             </div>
 
             <button type="submit" class="notify-btn">
                 Send Notification
             </button>
 
-        </form>
+       </form>
 
     </div>
 </div>
+
 
 {% endblock %}
