@@ -537,7 +537,7 @@ window.onclick = function(event) {
 </script>
 <script>
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register("/static/firebase-messaging-sw.js")
+  navigator.serviceWorker.register("/firebase-messaging-sw.js")
   .then(function(registration) {
       console.log("Service Worker Registered", registration);
   })
@@ -585,7 +585,7 @@ Notification.requestPermission().then((permission) => {
             fetch("https://iid.googleapis.com/iid/v1/" + token + "/rel/topics/all", {
                 method: "POST",
                 headers: {
-                    "Authorization": "BA3f2v6OKCkGwsrBYl7aEZf2xiDk1BMDj4-lM94zflwUn3yQ_K6LByt1pc_l2_JwzjINJwSfy2pTUF9ry0MlJDg"
+                    "Authorization": "key=SERVER_KEY"
                 }
             });
 
@@ -611,6 +611,7 @@ onMessage(messaging, (payload) => {
 </script>
 
 {% endblock %}
+
 
 
 
