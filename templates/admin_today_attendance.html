@@ -101,7 +101,7 @@ tr:hover{
                     <td>
                         <span class="badge">Present</span>
                     </td>
-                    <td>{{ attendance.check_in.strftime('%I:%M %p') }}</td>
+                    <td>{{ attendance.check_in }}</td>
                 </tr>
                 {% endfor %}
             {% else %}
@@ -115,5 +115,6 @@ tr:hover{
         </table>
     </div>
 </div>
+
 
 {% endblock %}
