@@ -42,7 +42,7 @@
             height:100vh;
             left:0;
             top:0;
-            padding-top:50px;
+            padding-top:15px;
             display:flex;
             flex-direction:column;
             transition:.3s ease;
@@ -172,7 +172,7 @@
         :root{
         --card-bg:white;
         --text-color:#111;
-       }
+        }
 
        .dark-mode{
        background:#0f172a;
@@ -188,8 +188,6 @@
         .close-btn{
             display:none;
         }
-
-        /* ================= MOBILE ================= */
         @media(max-width:768px){
 
             body{
@@ -219,12 +217,28 @@
                 justify-content:space-between;
             }
 
+         /* HEADER MOBILE STYLE */
+            .sidebar-header{
+                flex-direction:column;
+                align-items:center;
+                position:relative;
+            }
+
+            .sidebar-header h2{
+                font-size:18px;
+                margin-top:10px;
+            }
+
+    /* CLOSE BUTTON SMALL + TOP RIGHT */
             .close-btn{
                 display:block;
+                position:absolute;
+                top:-5px;
+                right:10px;
                 background:none;
                 border:none;
                 color:white;
-                font-size:22px;
+                font-size:16px;
                 cursor:pointer;
             }
 
@@ -232,7 +246,7 @@
                 font-size:12px;
                 padding-bottom:12px;
             }
-        }
+        }   
 </style>
 </head>
 <body>
@@ -399,6 +413,7 @@ function toggleDarkMode(){
 
 </body>
 </html>
+
 
 
 
