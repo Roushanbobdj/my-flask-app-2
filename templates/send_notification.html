@@ -51,20 +51,7 @@
     border-color:#2563eb;
     box-shadow:0 0 0 3px rgba(37,99,235,.1);
 }
-.form-group input{
-    width:100%;
-    padding:12px 14px;
-    border-radius:10px;
-    border:1px solid #e5e7eb;
-    font-size:14px;
-    outline:none;
-    transition:0.2s;
-}
 
-.form-group input:focus{
-    border-color:#2563eb;
-    box-shadow:0 0 0 3px rgba(37,99,235,.1);
-}
 .notify-btn{
     width:100%;
     padding:12px;
@@ -88,27 +75,24 @@
 
         <h2>📢 Send Notification</h2>
 
-        <form method="POST" action="/send_push">
+        <form method="POST">
 
             <div class="form-group">
-                <label>Title</label>
-                <input type="text" name="title" placeholder="Title" required>
-            </div>
-
-            <div class="form-group">
-                <label>Notification Message</label>
-                <textarea name="message" placeholder="Type your notification message here..." required></textarea>
+                <label for="message">Notification Message</label>
+                <textarea
+                    id="message"
+                    name="message"
+                    placeholder="Type your notification message here..."
+                    required></textarea>
             </div>
 
             <button type="submit" class="notify-btn">
                 Send Notification
             </button>
 
-       </form>
+        </form>
 
     </div>
 </div>
 
-
 {% endblock %}
-
