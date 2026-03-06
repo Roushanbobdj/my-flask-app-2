@@ -585,7 +585,7 @@ Notification.requestPermission().then((permission) => {
             fetch("https://iid.googleapis.com/iid/v1/" + token + "/rel/topics/all", {
                 method: "POST",
                 headers: {
-                    "Authorization": "key=SERVER_KEY"
+                    "Authorization": "key=ede1b25389f12502293177d70141f783f4e461dc"
                 }
             });
 
@@ -611,6 +611,7 @@ onMessage(messaging, (payload) => {
 </script>
 
 {% endblock %}
+
 
 
 
