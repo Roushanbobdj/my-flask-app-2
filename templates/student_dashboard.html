@@ -535,82 +535,9 @@ window.onclick = function(event) {
     }
 }
 </script>
-<script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register("/firebase-messaging-sw.js")
-  .then(function(registration) {
-      console.log("Service Worker Registered", registration);
-  })
-  .catch(function(err) {
-      console.log("Service Worker Error", err);
-  });
-}
-</script>
-<script type="module">
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyBgNcTolAC58hxkPhwzUUkXf63vJ7ZREdI",
-  authDomain: "roushan-reading-room.firebaseapp.com",
-  projectId: "roushan-reading-room",
-  storageBucket: "roushan-reading-room.firebasestorage.app",
-  messagingSenderId: "483049478376",
-  appId: "1:483049478376:web:577fc54d967d53318f515d"
-};
-
-const app = initializeApp(firebaseConfig);
-const messaging = getMessaging(app);
-
-Notification.requestPermission().then((permission) => {
-
-    if (permission === "granted") {
-
-        getToken(messaging, {
-            vapidKey: "BA3f2v6OKCkGwsrBYl7aEZf2xiDk1BMDj4-lM94zflwUn3yQ_K6LByt1pc_l2_JwzjINJwSfy2pTUF9ry0MlJDg"
-        }).then((token) => {
-
-            console.log("TOKEN:", token);
-
-            fetch("/save-token", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    token: token
-                })
-            });
-            fetch("https://iid.googleapis.com/iid/v1/" + token + "/rel/topics/all", {
-                method: "POST",
-                headers: {
-                    "Authorization": "key=ede1b25389f12502293177d70141f783f4e461dc"
-                }
-            });
-
-        });
-
-    }
-
-});
-
-/* ⭐ FOREGROUND NOTIFICATION */
-
-onMessage(messaging, (payload) => {
-
-    console.log("Message received:", payload);
-
-    new Notification(payload.notification.title, {
-        body: payload.notification.body,
-        icon: "/static/icons/icon-192.png"
-    });
-
-});
-
-</script>
 
 {% endblock %}
+
 
 
 
