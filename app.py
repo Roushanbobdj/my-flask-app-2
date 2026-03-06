@@ -1174,7 +1174,7 @@ def send_push():
 
     headers = {
         "Content-Type": "application/json",
-        "Authorization": "key=YOUR_FIREBASE_SERVER_KEY"
+        "Authorization": "key=ede1b25389f12502293177d70141f783f4e461dc"
     }
 
     data = {
@@ -1210,6 +1210,7 @@ import os
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
+
 
 
 
