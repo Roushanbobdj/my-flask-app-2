@@ -49,6 +49,15 @@
             z-index:1000;
         }
 
+        /* ===== ADDED (HEADER FIX) ===== */
+        .sidebar-header{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:0 20px;
+            margin-bottom:20px;
+        }
+
         .sidebar.hide{
             left:-260px;
         }
@@ -159,6 +168,7 @@
         .dark-mode .sidebar{
             background:#020617;
         }
+
         :root{
         --card-bg:white;
         --text-color:#111;
@@ -173,6 +183,7 @@
       background:#1e293b;
       color:#ffffff;
       }
+
         /* ================= CLOSE BTN ================= */
         .close-btn{
             display:none;
@@ -225,15 +236,16 @@
                 padding-bottom:12px;
             }
         }
-    </style>
+</style>
 </head>
 <body>
 
 {% if current_user.is_authenticated %}
 <div class="sidebar" id="sidebar">
-    <button class="close-btn" onclick="toggleSidebar()">✖</button>
-
-    <h2>📚 Roushan RR</h2>
+    <div class="sidebar-header">
+        <h2>📚 Roushan RR</h2>
+        <button class="close-btn" onclick="toggleSidebar()">✖</button>
+    </div>
 
     {% if current_user.role == "student" %}
         <a href="{{ url_for('student_dashboard') }}">🏠 Dashboard</a>
@@ -390,6 +402,7 @@ function toggleDarkMode(){
 
 </body>
 </html>
+
 
 
 
