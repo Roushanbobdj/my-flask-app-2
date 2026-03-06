@@ -387,44 +387,10 @@ function toggleDarkMode(){
 }
 
 </script>
-<script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyBgNcTolAC58hxkPhwzUUkXf63vJ7ZREdI",
-  authDomain: "roushan-reading-room.firebaseapp.com",
-  projectId: "roushan-reading-room",
-  storageBucket: "roushan-reading-room.firebasestorage.app",
-  messagingSenderId: "483049478376",
-  appId: "1:483049478376:web:577fc54d967d53318f515d",
-  measurementId: "G-L3ZS66NXP8"
-};
-
-const app = initializeApp(firebaseConfig);
-
-const messaging = getMessaging(app);
-
-Notification.requestPermission().then((permission) => {
-
-    if (permission === "granted") {
-
-        getToken(messaging, {
-            vapidKey: "BA3f2v6OKCkGwsrBYl7aEZf2xiDk1BMDj4-lM94zflwUn3yQ_K6LByt1pc_l2_JwzjINJwSfy2pTUF9ry0MlJDg"
-        }).then((token) => {
-
-            console.log("TOKEN:", token);
-
-        });
-
-    }
-
-});
-
-</script>
 </body>
 </html>
+
 
 
 
