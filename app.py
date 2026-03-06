@@ -1161,7 +1161,8 @@ def admin_seats():
         "admin_seats.html",
         students=students
     )
-from flask import send_from_directory
+import requests
+from flask import request, redirect
 
 @app.route("/send_push", methods=["POST"])
 def send_push():
@@ -1172,8 +1173,8 @@ def send_push():
     url = "https://fcm.googleapis.com/fcm/send"
 
     headers = {
-        "Authorization": BA3f2v6OKCkGwsrBYl7aEZf2xiDk1BMDj4-lM94zflwUn3yQ_K6LByt1pc_l2_JwzjINJwSfy2pTUF9ry0MlJDg,
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Authorization": "key=YOUR_FIREBASE_SERVER_KEY"
     }
 
     data = {
@@ -1185,9 +1186,14 @@ def send_push():
         }
     }
 
-    response = requests.post(url, headers=headers, json=data)
+    requests.post(url, json=data, headers=headers)
 
-    return response.text
+    return redirect("/send_notification")
+from flask import send_from_directory
+
+@app.route('/firebase-messaging-sw.js')
+def firebase_sw():
+    return send_from_directory('static', 'firebase-messaging-sw.js')
 # -------------------------
 # DB INIT (FIRST DEPLOY ONLY)
 # -------------------------
@@ -1204,6 +1210,7 @@ import os
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
+
 
 
 
