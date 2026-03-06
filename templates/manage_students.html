@@ -102,6 +102,37 @@
     .btn-delete {
         background: #ef4444;
     }
+    /* MOBILE RESPONSIVE */
+    @media (max-width:768px){
+
+        .page-card{
+            padding:15px;
+            margin:15px;
+        }
+
+        .page-header{
+            flex-direction:column;
+            align-items:flex-start;
+        }
+
+        .search-input{
+            width:100%;
+        }
+
+        table{
+            font-size:13px;
+        }
+
+        th, td{
+            padding:10px;
+        }
+
+    }
+
+/* TABLE SCROLL FOR MOBILE */
+.table-wrapper{
+    overflow-x:auto;
+}
 </style>
 
 <div class="page-card">
@@ -121,6 +152,7 @@
     </div>
 
     <!-- TABLE -->
+    <div class="table-wrapper">
     <table id="studentsTable">
         <thead>
             <tr>
@@ -169,7 +201,7 @@
             {% endfor %}
         </tbody>
     </table>
-
+    </div>
 </div>
 
 <!-- SEARCH SCRIPT -->
@@ -199,5 +231,6 @@ function searchStudent() {
     }
 }
 </script>
+
 
 {% endblock %}
