@@ -81,6 +81,63 @@ margin-bottom:15px;
 animation:fadeIn .5s ease;
 }
 
+/* WhatsApp Button */
+
+.whatsapp-btn{
+
+display:block;
+margin-top:20px;
+text-align:center;
+background:#25D366;
+color:white;
+padding:14px;
+border-radius:50px;
+font-weight:600;
+text-decoration:none;
+transition:.3s;
+box-shadow:0 8px 18px rgba(0,0,0,.15);
+animation:popIn .6s ease;
+}
+
+.whatsapp-btn:hover{
+
+transform:scale(1.05);
+box-shadow:0 12px 25px rgba(0,0,0,.25);
+color:white;
+
+}
+
+@keyframes popIn{
+
+from{
+opacity:0;
+transform:scale(.8);
+}
+
+to{
+opacity:1;
+transform:scale(1);
+}
+
+}
+
+/* Mobile Responsive */
+
+@media(max-width:576px){
+
+.notification-card{
+
+margin:20px;
+padding:20px;
+
+}
+
+.page-title{
+font-size:20px;
+}
+
+}
+
 </style>
 
 <div class="container">
@@ -112,7 +169,7 @@ animation:fadeIn .5s ease;
 {% for student in students %}
 
 <option value="{{student.id}}">
-{{student.name}}
+{{student.name}} (ID: {{student.id}})
 </option>
 
 {% endfor %}
@@ -145,6 +202,16 @@ required></textarea>
 </button>
 
 </form>
+
+<!-- WhatsApp Group Button -->
+
+<a href="https://chat.whatsapp.com/YOUR_GROUP_LINK" 
+target="_blank"
+class="whatsapp-btn">
+
+📱 Open Library WhatsApp Group
+
+</a>
 
 </div>
 
