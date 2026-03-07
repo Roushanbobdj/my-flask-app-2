@@ -423,27 +423,36 @@ button{
             <h3>📊 Total Expense</h3>
             <p>₹ {{ total_expense }}</p>
         </div>
-        <div class="stat-card">
-            <h3>💰 Total Fee Collected</h3>
-            <p>₹ {{ total_fee }}</p>
-        </div>
+
+        <!-- CLICKABLE TOTAL FEE CARD -->
+        <a href="{{ url_for('fee_report') }}" style="text-decoration:none; color:inherit;">
+            <div class="stat-card">
+                <h3>💰 Total Fee Collected</h3>
+                <p>₹ {{ total_fee }}</p>
+            </div>
+        </a>
 
         <div class="stat-card">
             <h3>📉 Net Earning</h3>
             <p>₹ {{ net_earning }}</p>
         </div>
+
         <div class="stat-card">
             <h3>💰 Today Fee Collection</h3>
             <p>₹ {{ today_earning }}</p>
         </div>
+
         <div class="stat-card">
             <h3>📅 This Month Fee Collection</h3>
             <p>₹ {{ total_fee_month }}</p>
         </div>
+
     </div>
-        <a href="{{ url_for('expense_list') }}" class="view-expense-btn">
-            View All Expenses →
-        </a>
+
+    <a href="{{ url_for('expense_list') }}" class="view-expense-btn">
+        View All Expenses →
+    </a>
+
     <br>
 
 </div>
@@ -564,6 +573,7 @@ function downloadQR(){
 </script>
 
 {% endblock %}
+
 
 
 
