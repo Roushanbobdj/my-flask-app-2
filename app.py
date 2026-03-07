@@ -755,7 +755,7 @@ def send_notification():
     if current_user.role != "admin":
         return redirect(url_for("student_dashboard"))
 
-    students = User.query.filter_by(role="student").all()
+    students = User.query.filter_by(role="student").order_by(User.name).all()
 
     if request.method == "POST":
 
@@ -778,7 +778,7 @@ def send_notification():
         return redirect(url_for("admin_dashboard"))
 
     return render_template("send_notification.html", students=students)
-
+    
 @app.route("/notifications")
 @login_required
 def notifications():
@@ -1224,6 +1224,7 @@ import os
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
+
 
 
 
