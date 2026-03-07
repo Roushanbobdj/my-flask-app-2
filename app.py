@@ -1259,6 +1259,29 @@ def check_notification():
         })
 
     return jsonify({"message": None})
+
+from sqlalchemy import func
+
+@app.route("/fee_report")
+@login_required
+def fee_report():
+
+    if current_user.role != "admin":
+        return redirect(url_for("student_dashboard"))
+
+    report = db.session.query(
+        Fee.paid_year,
+        Fee.paid_month,
+        func.sum(Fee.amount)
+    ).group_by(
+        Fee.paid_year,
+        Fee.paid_month
+    ).order_by(
+        Fee.paid_year.desc(),
+        Fee.paid_month.desc()
+    ).all()
+
+    return render_template("fee_report.html", report=report)
 # -------------------------
 # DB INIT (FIRST DEPLOY ONLY)
 # -------------------------
@@ -1275,6 +1298,7 @@ import os
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
+
 
 
 
