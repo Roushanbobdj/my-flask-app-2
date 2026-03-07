@@ -1270,15 +1270,15 @@ def fee_report():
         return redirect(url_for("student_dashboard"))
 
     report = db.session.query(
-        Fee.paid_year,
-        Fee.paid_month,
-        func.sum(Fee.amount)
+        db.extract('year', Fee.paid_on).label("year"),
+        db.extract('month', Fee.paid_on).label("month"),
+        db.func.sum(Fee.amount).label("total")
     ).group_by(
-        Fee.paid_year,
-        Fee.paid_month
+        db.extract('year', Fee.paid_on),
+        db.extract('month', Fee.paid_on)
     ).order_by(
-        Fee.paid_year.desc(),
-        Fee.paid_month.desc()
+        db.extract('year', Fee.paid_on).desc(),
+        db.extract('month', Fee.paid_on).desc()
     ).all()
 
     return render_template("fee_report.html", report=report)
@@ -1298,6 +1298,7 @@ import os
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
+
 
 
 
