@@ -107,13 +107,22 @@
 
         /* ================= MAIN ================= */
         .main{
-            margin-left:250px;
+            margin-left:0px;
             padding:20px;
             transition:.3s ease;
         }
 
         .main.full{
             margin-left:0;
+        }
+        body.logged-in .main{
+            margin-left:250px;
+        }
+
+        @media(max-width:768px){
+            body.logged-in .main{
+                margin-left:0;
+            }
         }
 
         /* ================= TOPBAR ================= */
@@ -280,7 +289,7 @@ body.dark-mode .menu-btn{
         }   
 </style>
 </head>
-<body>
+<body class="{% if current_user.is_authenticated %}logged-in{% endif %}">
 
 {% if current_user.is_authenticated %}
 <div class="sidebar" id="sidebar">
@@ -444,6 +453,7 @@ function toggleDarkMode(){
 
 </body>
 </html>
+
 
 
 
