@@ -423,7 +423,20 @@ button{
             <h3>📊 Total Expense</h3>
             <p>₹ {{ total_expense }}</p>
         </div>
+        <div class="card">
+            <h4>Total Fee</h4>
+            <p>₹{{ total_fee }}</p>
+        </div>
 
+        <div class="card">
+            <h4>Total Expense</h4>
+            <p>₹{{ total_expense }}</p>
+        </div>
+
+        <div class="card">
+            <h4>Net Earning</h4>
+            <p>₹{{ net_earning }}</p>
+        </div>
     </div>
         <a href="{{ url_for('expense_list') }}" class="view-expense-btn">
             View All Expenses →
@@ -548,4 +561,5 @@ function downloadQR(){
 </script>
 
 {% endblock %}
+
 
