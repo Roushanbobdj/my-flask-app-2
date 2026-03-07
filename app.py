@@ -748,6 +748,8 @@ def reset_password(id):
 # NOTIFICATIONS
 # -------------------------
 
+import urllib.parse
+
 @app.route("/send_notification", methods=["GET","POST"])
 @login_required
 def send_notification():
@@ -762,6 +764,7 @@ def send_notification():
         message = request.form.get("message")
         student_id = request.form.get("student_id")
 
+        # DATABASE SAVE
         if student_id == "all":
             notification = Notification(
                 message=message,
@@ -776,8 +779,13 @@ def send_notification():
         db.session.add(notification)
         db.session.commit()
 
+        # 🔵 WHATSAPP MESSAGE
+        encoded_msg = urllib.parse.quote(message)
+        whatsapp_link = f"https://wa.me/?text={encoded_msg}"
+
         flash("Notification Sent Successfully!", "success")
-        return redirect(url_for("admin_dashboard"))
+
+        return redirect(whatsapp_link)
 
     return render_template(
         "send_notification.html",
@@ -1212,7 +1220,27 @@ def admin_seats():
         "admin_seats.html",
         students=students
     )
+@app.route("/check-notification")
+@login_required
+def check_notification():
 
+    notification = Notification.query.filter(
+        (Notification.student_id == current_user.id) |
+        (Notification.student_id == None),
+        Notification.read == False
+    ).order_by(Notification.created_at.desc()).first()
+
+    if notification:
+
+        notification.read = True
+        db.session.commit()
+
+        return jsonify({
+            "title": "Library Notice",
+            "message": notification.message
+        })
+
+    return jsonify({})
 # -------------------------
 # DB INIT (FIRST DEPLOY ONLY)
 # -------------------------
@@ -1229,6 +1257,7 @@ import os
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
+
 
 
 
