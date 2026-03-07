@@ -917,7 +917,7 @@ def generate_qr():
         return redirect(url_for("student_dashboard"))
     QRCode.query.update({"active": False})
     db.session.commit()
-    token = str(uuid.uuid4())
+    token = uuid.uuid4().hex
     qr = QRCode(qr_token=token, active=True)
     db.session.add(qr)
     db.session.commit()
@@ -961,7 +961,7 @@ def scan():
     if not record.check_out:
         check_in_time = datetime.strptime(record.check_in, "%H:%M:%S")
         record.check_out = now.strftime("%H:%M:%S")
-        record.total_hours = round((now - check_in_time).seconds / 3600, 2)
+        record.total_hours = round((now - check_in_time).total_seconds() / 3600, 2)
         db.session.commit()
         return jsonify({"message": "Check-out Successful"})
 
@@ -1257,6 +1257,7 @@ import os
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
+
 
 
 
