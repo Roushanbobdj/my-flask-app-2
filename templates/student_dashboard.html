@@ -535,8 +535,31 @@ window.onclick = function(event) {
     }
 }
 </script>
+<script>
 
+document.addEventListener("DOMContentLoaded", function(){
+
+    let notification = "{{ notification.message if notification else '' }}";
+
+    if(notification){
+
+        let lastNotification = localStorage.getItem("lastNotification");
+
+        if(lastNotification !== notification){
+
+            alert(notification);   // popup show
+
+            localStorage.setItem("lastNotification", notification);
+
+        }
+
+    }
+
+});
+
+</script>
 {% endblock %}
+
 
 
 
