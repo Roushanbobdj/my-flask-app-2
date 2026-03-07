@@ -206,6 +206,24 @@ button{
     border:1px solid #0847a5;
     font-size:13px;
 }
+/* CLICKABLE CARD */
+
+.clickable-card{
+text-decoration:none;
+color:inherit;
+}
+
+.total-fee-card{
+background:linear-gradient(135deg,#22c55e,#16a34a);
+color:white;
+cursor:pointer;
+transition:all .25s ease;
+}
+
+.total-fee-card:hover{
+transform:translateY(-6px);
+box-shadow:0 12px 25px rgba(0,0,0,.2);
+}
 
 /* ===== MOBILE RESPONSIVE ===== */
 @media(max-width:768px){
@@ -573,6 +591,7 @@ function downloadQR(){
 </script>
 
 {% endblock %}
+
 
 
 
