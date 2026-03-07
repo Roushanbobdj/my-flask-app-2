@@ -463,34 +463,11 @@ document.addEventListener("DOMContentLoaded", function(){
 
 });
 </script>
-<script>
 
-let lastMessage = "";
-
-function checkNotification(){
-
-    fetch("/check-notification")
-    .then(res => res.json())
-    .then(data => {
-
-        if(data.message && data.message !== lastMessage){
-
-            lastMessage = data.message;
-
-            alert("📢 New Notification:\n\n" + data.message);
-
-        }
-
-    });
-
-}
-
-setInterval(checkNotification, 5000);
-
-</script>
 
 </body>
 </html>
+
 
 
 
