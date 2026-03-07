@@ -465,43 +465,33 @@ document.addEventListener("DOMContentLoaded", function(){
 </script>
 <script>
 
-function showNotification(title, message){
-
- if(Notification.permission === "granted"){
-
-  new Notification(title,{
-   body: message
-  });
-
- }
-
-}
+let lastMessage = "";
 
 function checkNotification(){
 
- fetch("/check-notification")
- .then(res => res.json())
- .then(data => {
+    fetch("/check-notification")
+    .then(res => res.json())
+    .then(data => {
 
-   if(data.message){
-      showNotification(data.title, data.message);
-   }
+        if(data.message && data.message !== lastMessage){
 
- });
+            lastMessage = data.message;
+
+            alert("📢 New Notification:\n\n" + data.message);
+
+        }
+
+    });
 
 }
 
-setInterval(function(){
-   try{
-      checkNotification();
-   }catch(e){
-      console.log("Notification check error");
-   }
-},5000);
+setInterval(checkNotification, 5000);
 
 </script>
+
 </body>
 </html>
+
 
 
 
