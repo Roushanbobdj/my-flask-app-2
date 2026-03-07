@@ -463,10 +463,34 @@ document.addEventListener("DOMContentLoaded", function(){
 
 });
 </script>
+<script>
 
+document.addEventListener("DOMContentLoaded", function(){
+
+    let notificationMessage = "{{ notification.message if notification else '' }}";
+    let notificationId = "{{ notification.id if notification else '' }}";
+
+    if(notificationMessage){
+
+        let lastNotificationId = localStorage.getItem("lastNotificationId");
+
+        if(lastNotificationId !== notificationId){
+
+            alert(notificationMessage);
+
+            localStorage.setItem("lastNotificationId", notificationId);
+
+        }
+
+    }
+
+});
+
+</script>
 
 </body>
 </html>
+
 
 
 
