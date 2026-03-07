@@ -1,411 +1,416 @@
-{% extends "base.html" %}
-{% block content %}
-<div class="home-wrapper">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Roushan Reading Room</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
 
-/* ===== HERO ===== */
-  
-.home-wrapper{
-width:100%;
-max-width:100%;
+*{
 margin:0;
 padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
 }
-  
-.hero{
-height:480px;
-background:url("/static/img/library.jpg") center/cover no-repeat;
+
+body{
+background:#f5f7fb;
+color:#333;
+overflow-x:hidden;
+}
+
+/* ================= TOP BAR ================= */
+
+.topbar{
+width:100%;
+background:linear-gradient(135deg,#4f46e5,#3b82f6);
+color:white;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:12px 40px;
+}
+
+.topbar h1{
+font-size:18px;
+font-weight:600;
+}
+
+.login-btn{
+background:white;
+color:#4f46e5;
+padding:8px 18px;
 border-radius:20px;
+text-decoration:none;
+font-size:14px;
+font-weight:500;
+transition:0.3s;
+}
+
+.login-btn:hover{
+background:#eef2ff;
+transform:scale(1.05);
+}
+
+/* ================= HERO SECTION ================= */
+
+.hero{
+height:85vh;
 display:flex;
 align-items:center;
 justify-content:center;
 text-align:center;
-color:white;
-position:relative;
-overflow:hidden;
+flex-direction:column;
+padding:20px;
 }
 
-.hero::after{
-content:"";
-position:absolute;
-inset:0;
-background:rgba(0,0,0,.65);
-}
-
-.hero-content{
-position:relative;
-z-index:2;
-max-width:650px;
-}
-
-.hero h1{
+.hero h2{
 font-size:48px;
-font-weight:700;
+color:#111;
+margin-bottom:15px;
+animation:fadeUp 1s ease;
 }
 
 .hero p{
-margin-top:12px;
 font-size:18px;
-opacity:.9;
+color:#555;
+max-width:600px;
+margin-bottom:25px;
+animation:fadeUp 1.2s ease;
 }
 
 .hero-btn{
-margin-top:20px;
 padding:12px 28px;
-border:none;
-border-radius:10px;
-background:#2563eb;
+background:#4f46e5;
 color:white;
-font-size:16px;
-cursor:pointer;
-transition:.3s;
+border-radius:30px;
+text-decoration:none;
+font-weight:500;
+transition:0.3s;
 }
 
 .hero-btn:hover{
-background:#1e4fd8;
+background:#4338ca;
+transform:translateY(-3px);
 }
 
-/* ===== SECTION TITLE ===== */
+/* ================= FEATURES ================= */
+
+.features{
+padding:80px 10%;
+background:white;
+}
 
 .section-title{
-margin-top:70px;
 text-align:center;
-font-size:30px;
+font-size:32px;
+margin-bottom:50px;
 font-weight:600;
 }
 
-/* ===== FEATURES ===== */
-
-.features{
-margin-top:30px;
+.feature-grid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:20px;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:30px;
 }
 
 .feature-card{
-background:var(--card-bg);
-padding:25px;
-border-radius:16px;
-text-align:center;
-box-shadow:0 10px 25px rgba(0,0,0,.08);
-transition:.3s;
+background:#f9fafc;
+padding:30px;
+border-radius:15px;
+box-shadow:0 10px 20px rgba(0,0,0,0.05);
+transition:0.3s;
 }
 
 .feature-card:hover{
-transform:translateY(-6px);
-}
-
-.feature-icon{
-font-size:34px;
-}
-
-/* ===== PLANS ===== */
-
-.plans{
-margin-top:30px;
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:20px;
-}
-
-.plan-card{
-background:var(--card-bg);
-padding:30px;
-border-radius:18px;
-text-align:center;
-box-shadow:0 10px 25px rgba(0,0,0,.08);
-transition:.3s;
-}
-
-.plan-card:hover{
 transform:translateY(-8px);
+box-shadow:0 15px 30px rgba(0,0,0,0.08);
 }
 
-.plan-price{
-font-size:36px;
-color:#2563eb;
-margin:10px 0;
+.feature-card h3{
+margin-bottom:10px;
+font-size:20px;
 }
 
-.plan-btn{
-margin-top:10px;
-padding:10px 20px;
-border:none;
-border-radius:8px;
-background:#2563eb;
-color:white;
-cursor:pointer;
+.feature-card p{
+font-size:14px;
+color:#666;
 }
 
-/* ===== GALLERY ===== */
+/* ================= STUDY ENVIRONMENT ================= */
 
-.gallery{
-margin-top:40px;
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-gap:15px;
-}
-
-.gallery img{
-width:100%;
-border-radius:12px;
-height:160px;
-object-fit:cover;
-}
-
-/* ===== CONTACT ===== */
-
-.contact{
-margin-top:70px;
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:30px;
+.study-section{
+padding:80px 10%;
+display:flex;
 align-items:center;
+justify-content:space-between;
+flex-wrap:wrap;
+gap:40px;
 }
 
-.contact-info{
-background:var(--card-bg);
-padding:30px;
-border-radius:18px;
-box-shadow:0 10px 25px rgba(0,0,0,.08);
+.study-text{
+flex:1;
+min-width:260px;
 }
 
-.contact-info h3{
+.study-text h2{
+font-size:34px;
 margin-bottom:15px;
 }
 
-.contact-info p{
-margin:6px 0;
+.study-text p{
+color:#555;
+line-height:1.6;
 }
 
-.contact-form{
-background:var(--card-bg);
-padding:30px;
-border-radius:18px;
-box-shadow:0 10px 25px rgba(0,0,0,.08);
+.study-img{
+flex:1;
+min-width:260px;
 }
 
-.contact-form input,
-.contact-form textarea{
+.study-img img{
 width:100%;
-padding:10px;
-margin-top:10px;
-border-radius:8px;
-border:1px solid #ddd;
+border-radius:15px;
+box-shadow:0 10px 25px rgba(0,0,0,0.1);
 }
 
-.contact-form button{
-margin-top:12px;
-padding:10px 18px;
-border:none;
-border-radius:8px;
-background:#2563eb;
+/* ================= CONTACT ================= */
+
+.contact{
+background:#111827;
 color:white;
+padding:60px 10%;
 }
 
-/* ===== CTA ===== */
+.contact-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:30px;
+}
 
-.cta{
-margin-top:70px;
-padding:40px;
-background:#2563eb;
-color:white;
+.contact h3{
+margin-bottom:15px;
+}
+
+.contact p{
+font-size:14px;
+color:#d1d5db;
+margin-bottom:8px;
+}
+
+.contact a{
+color:#93c5fd;
+text-decoration:none;
+}
+
+.contact a:hover{
+text-decoration:underline;
+}
+
+/* ================= FOOTER ================= */
+
+.footer{
+background:#030712;
+color:#9ca3af;
 text-align:center;
-border-radius:20px;
+padding:20px;
+font-size:13px;
 }
 
-.cta h2{
-font-size:32px;
+/* ================= ANIMATION ================= */
+
+@keyframes fadeUp{
+
+from{
+opacity:0;
+transform:translateY(30px);
 }
 
-.cta button{
-margin-top:15px;
-padding:12px 25px;
-border:none;
-border-radius:10px;
-background:white;
-color:#2563eb;
-font-weight:600;
+to{
+opacity:1;
+transform:translateY(0);
 }
 
-/* ===== MOBILE ===== */
+}
+
+/* ================= MOBILE ================= */
 
 @media(max-width:768px){
 
-.hero{
-height:320px;
+.topbar{
+padding:12px 20px;
 }
 
-.hero h1{
-font-size:28px;
+.hero h2{
+font-size:34px;
 }
 
 .hero p{
-font-size:14px;
+font-size:16px;
 }
 
-.section-title{
-font-size:22px;
-}
-
-.contact{
-grid-template-columns:1fr;
+.study-section{
+flex-direction:column;
+text-align:center;
 }
 
 }
 
 </style>
 
+</head>
 
-<!-- HERO -->
+<body>
 
-<div class="hero">
-<div class="hero-content">
+<!-- ================= TOP BAR ================= -->
 
-<h1>Roushan Reading Room</h1>
-<p>Silent & Comfortable Study Environment For Serious Students</p>
+<div class="topbar">
 
-<a href="/login">
-<button class="hero-btn">Login to Continue</button>
-</a>
+<h1>Welcome to Roushan Reading Room</h1>
 
-</div>
+<a href="/login" class="login-btn">Login</a>
+
 </div>
 
 
-<!-- FEATURES -->
+<!-- ================= HERO ================= -->
 
-<h2 class="section-title">Why Choose Our Library</h2>
+<section class="hero">
 
-<div class="features">
+<h2>Best Study Environment</h2>
+
+<p>
+A peaceful and distraction-free reading room designed for serious students.
+Improve your focus and productivity with our modern study facilities.
+</p>
+
+<a href="/login" class="hero-btn">Join Now</a>
+
+</section>
+
+
+<!-- ================= FEATURES ================= -->
+
+<section class="features">
+
+<h2 class="section-title">Why Choose Our Reading Room</h2>
+
+<div class="feature-grid">
 
 <div class="feature-card">
-<div class="feature-icon">📚</div>
-<h3>Silent Study</h3>
-<p>Peaceful environment for focused study</p>
+<h3>Silent Study Area</h3>
+<p>Complete silence maintained so students can focus deeply on their preparation.</p>
 </div>
 
 <div class="feature-card">
-<div class="feature-icon">⚡</div>
-<h3>Fast WiFi</h3>
-<p>High speed internet for research</p>
+<h3>Comfortable Seating</h3>
+<p>Ergonomic seating arrangement designed for long study hours.</p>
 </div>
 
 <div class="feature-card">
-<div class="feature-icon">🪑</div>
-<h3>Comfort Seats</h3>
-<p>Designed for long study sessions</p>
+<h3>24/7 Access</h3>
+<p>Flexible study timing so you can prepare according to your routine.</p>
 </div>
 
 <div class="feature-card">
-<div class="feature-icon">🔒</div>
-<h3>24×7 Security</h3>
-<p>CCTV monitored secure environment</p>
+<h3>High Speed WiFi</h3>
+<p>Fast internet connectivity for online classes and study material.</p>
+</div>
+
+<div class="feature-card">
+<h3>Clean Environment</h3>
+<p>Daily cleaning and hygienic environment for better concentration.</p>
+</div>
+
+<div class="feature-card">
+<h3>Security</h3>
+<p>Safe and monitored premises for students.</p>
 </div>
 
 </div>
 
+</section>
 
-<!-- PLANS -->
 
-<h2 class="section-title">Membership Plans</h2>
+<!-- ================= STUDY SECTION ================= -->
 
-<div class="plans">
+<section class="study-section">
 
-<div class="plan-card">
-<h3>Monthly Plan</h3>
-<div class="plan-price">₹800</div>
-<p>30 days full access</p>
-<button class="plan-btn">Join</button>
-</div>
+<div class="study-text">
 
-<div class="plan-card">
-<h3>3 Month Plan</h3>
-<div class="plan-price">₹2200</div>
-<p>Best value membership</p>
-<button class="plan-btn">Join</button>
-</div>
+<h2>Perfect Place for Competitive Exams</h2>
 
-<div class="plan-card">
-<h3>6 Month Plan</h3>
-<div class="plan-price">₹4000</div>
-<p>Long term study membership</p>
-<button class="plan-btn">Join</button>
-</div>
+<p>
+Whether you are preparing for UPSC, SSC, Banking, Railway, or any other competitive exam,
+our reading room provides the perfect environment to stay focused and productive.
+</p>
 
 </div>
 
+<div class="study-img">
 
-<!-- GALLERY -->
-
-<h2 class="section-title">Library Gallery</h2>
-
-<div class="gallery">
-
-<img src="/static/img/lib1.jpg">
-<img src="/static/img/lib2.jpg">
-<img src="/static/img/lib3.jpg">
-<img src="/static/img/lib4.jpg">
+<img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f">
 
 </div>
 
+</section>
 
-<!-- CONTACT -->
 
-<h2 class="section-title">Contact Us</h2>
+<!-- ================= CONTACT ================= -->
 
-<div class="contact">
+<section class="contact">
 
-<div class="contact-info">
+<div class="contact-grid">
 
-<h3>Library Information</h3>
+<div>
 
-<p><b>Library Name:</b> Roushan Reading Room</p>
+<h3>Roushan Reading Room</h3>
 
-<p><b>Location:</b> Mithapur, Patna</p>
-
-<p><b>Phone:</b> +91 9000000000</p>
-
-<p><b>Email:</b> readingroom@gmail.com</p>
-
-<p><b>Timing:</b> 6 AM - 10 PM</p>
+<p>
+A modern study hub for dedicated students.
+Focused environment, comfortable seating, and great facilities.
+</p>
 
 </div>
 
-<div class="contact-form">
+<div>
 
-<h3>Send Message</h3>
+<h3>Contact Us</h3>
 
-<form>
+<p>Phone: +91 9000000000</p>
 
-<input type="text" placeholder="Your Name">
+<p>Email: roushanreadingroom@gmail.com</p>
 
-<input type="email" placeholder="Your email">
+<p>Location: Mithapur, Bihar</p>
 
-<textarea rows="4" placeholder="Message"></textarea>
+</div>
 
-<button>Send Message</button>
+<div>
 
-</form>
+<h3>Opening Hours</h3>
+
+<p>Monday – Sunday</p>
+
+<p>6:00 AM – 11:00 PM</p>
 
 </div>
 
 </div>
 
+</section>
 
-<!-- CTA -->
 
-<div class="cta">
+<!-- ================= FOOTER ================= -->
 
-<h2>Start Your Study Journey Today</h2>
+<div class="footer">
 
-<p>Join the best reading room for exam preparation</p>
-
-<a href="/login">
-<button>Join Now</button>
-</a>
+© 2026 Roushan Reading Room | All Rights Reserved
 
 </div>
-</div>
-{% endblock %}
+
+</body>
+</html>
