@@ -1212,7 +1212,14 @@ def admin_seats():
         "admin_seats.html",
         students=students
     )
+from flask import jsonify
 
+@app.route("/check-notification")
+def check_notification():
+    return jsonify({
+        "title": "Library Notice",
+        "message": "New notification from admin"
+    })
 # -------------------------
 # DB INIT (FIRST DEPLOY ONLY)
 # -------------------------
@@ -1229,6 +1236,7 @@ import os
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
+
 
 
 
