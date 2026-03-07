@@ -586,6 +586,7 @@ def admin_dashboard():
 
     # 🔹 today attendance count
     today = datetime.today().date()
+    now = datetime.now()
     today_attendance = Attendance.query.filter_by(date=today).count()
 
     # 🔹 active QR
@@ -1274,6 +1275,7 @@ import os
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
+
 
 
 
