@@ -1,164 +1,299 @@
 {% extends "base.html" %}
 {% block content %}
 
-<!-- HERO SLIDER -->
+<style>
 
-<div id="slider" class="carousel slide" data-bs-ride="carousel">
+/* ================= HERO ================= */
 
-<div class="carousel-inner">
+.hero{
+    height:460px;
+    background:url("/static/img/library.jpg") center/cover no-repeat;
+    border-radius:20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    color:white;
+    position:relative;
+    overflow:hidden;
+}
 
-<div class="carousel-item active">
+.hero::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,.6);
+}
 
-<img src="/static/img/slide1.jpg" class="d-block w-100" style="height:450px; object-fit:cover;">
+.hero-content{
+    position:relative;
+    z-index:2;
+    max-width:650px;
+}
 
-<div class="carousel-caption">
+.hero h1{
+    font-size:46px;
+    font-weight:600;
+}
 
-<h1 class="hero-title">Best Study Environment</h1>
+.hero p{
+    margin-top:12px;
+    opacity:.9;
+    font-size:18px;
+}
 
-<p>Join Roushan Reading Room Today</p>
+.hero-btn{
+    margin-top:18px;
+    padding:12px 28px;
+    border:none;
+    border-radius:10px;
+    background:#2563eb;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
 
-<a href="/plans" class="btn btn-warning">
-Join Now
+/* ================= FEATURES ================= */
+
+.section-title{
+    margin-top:60px;
+    text-align:center;
+    font-size:28px;
+    font-weight:600;
+}
+
+.features{
+    margin-top:30px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+.feature-card{
+    background:var(--card-bg);
+    padding:25px;
+    border-radius:16px;
+    text-align:center;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.feature-card:hover{
+    transform:translateY(-6px);
+}
+
+.feature-icon{
+    font-size:34px;
+}
+
+.feature-card h3{
+    margin-top:10px;
+}
+
+/* ================= PLANS ================= */
+
+.plans{
+    margin-top:30px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:20px;
+}
+
+.plan-card{
+    background:var(--card-bg);
+    padding:30px;
+    border-radius:18px;
+    text-align:center;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.plan-card:hover{
+    transform:translateY(-8px);
+}
+
+.plan-price{
+    font-size:36px;
+    color:#2563eb;
+    margin:10px 0;
+}
+
+.plan-btn{
+    margin-top:10px;
+    padding:10px 20px;
+    border:none;
+    border-radius:8px;
+    background:#2563eb;
+    color:white;
+}
+
+/* ================= GALLERY ================= */
+
+.gallery{
+    margin-top:40px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:15px;
+}
+
+.gallery img{
+    width:100%;
+    border-radius:12px;
+    height:150px;
+    object-fit:cover;
+}
+
+/* ================= CTA ================= */
+
+.cta{
+    margin-top:60px;
+    padding:40px;
+    background:#2563eb;
+    color:white;
+    text-align:center;
+    border-radius:20px;
+}
+
+.cta h2{
+    font-size:32px;
+}
+
+.cta button{
+    margin-top:15px;
+    padding:12px 25px;
+    border:none;
+    border-radius:10px;
+    background:white;
+    color:#2563eb;
+    font-weight:600;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:768px){
+
+.hero{
+height:300px;
+}
+
+.hero h1{
+font-size:28px;
+}
+
+.hero p{
+font-size:14px;
+}
+
+.section-title{
+font-size:22px;
+}
+
+}
+
+</style>
+
+<!-- ================= HERO ================= -->
+
+<div class="hero">
+
+<div class="hero-content">
+
+<h1>Roushan Reading Room</h1>
+
+<p>Silent and comfortable study environment for serious students</p>
+
+<a href="/login">
+<button class="hero-btn">Login to Continue</button>
 </a>
 
 </div>
 
 </div>
 
-<div class="carousel-item">
+<!-- ================= FEATURES ================= -->
 
-<img src="/static/img/slide2.jpg" class="d-block w-100" style="height:450px; object-fit:cover;">
+<h2 class="section-title">Why Choose Our Library</h2>
 
-<div class="carousel-caption">
+<div class="features">
 
-<h1 class="hero-title">Silent Library</h1>
+<div class="feature-card">
+<div class="feature-icon">📚</div>
+<h3>Silent Study</h3>
+<p>Peaceful environment for focused learning</p>
+</div>
 
-<p>Perfect for Exam Preparation</p>
+<div class="feature-card">
+<div class="feature-icon">⚡</div>
+<h3>Fast WiFi</h3>
+<p>High speed internet for study and research</p>
+</div>
 
+<div class="feature-card">
+<div class="feature-icon">🪑</div>
+<h3>Comfortable Seats</h3>
+<p>Ergonomic seating for long hours</p>
+</div>
+
+<div class="feature-card">
+<div class="feature-icon">🔒</div>
+<h3>24×7 Security</h3>
+<p>CCTV monitored safe study area</p>
 </div>
 
 </div>
 
-</div>
+<!-- ================= PLANS ================= -->
 
-<button class="carousel-control-prev" data-bs-target="#slider" data-bs-slide="prev">
-<span class="carousel-control-prev-icon"></span>
-</button>
+<h2 class="section-title">Membership Plans</h2>
 
-<button class="carousel-control-next" data-bs-target="#slider" data-bs-slide="next">
-<span class="carousel-control-next-icon"></span>
-</button>
+<div class="plans">
 
-</div>
-
-<br><br>
-
-<!-- FEATURES -->
-
-<h2 class="text-center mb-4">Our Features</h2>
-
-<div class="row g-4">
-
-<div class="col-md-3 col-6">
-<div class="feature-box">
-<h4>📚 Silent Study</h4>
-<p>Peaceful study environment</p>
-</div>
-</div>
-
-<div class="col-md-3 col-6">
-<div class="feature-box">
-<h4>⚡ Fast WiFi</h4>
-<p>Unlimited internet</p>
-</div>
-</div>
-
-<div class="col-md-3 col-6">
-<div class="feature-box">
-<h4>🪑 Comfortable Seats</h4>
-<p>Ergonomic chairs</p>
-</div>
-</div>
-
-<div class="col-md-3 col-6">
-<div class="feature-box">
-<h4>🔒 CCTV Security</h4>
-<p>24x7 surveillance</p>
-</div>
-</div>
-
-</div>
-
-<br><br>
-
-<!-- MEMBERSHIP PLANS -->
-
-<h2 class="text-center mb-4">Membership Plans</h2>
-
-<div class="row g-4">
-
-<div class="col-md-4">
 <div class="plan-card">
-
-<h4>Monthly Plan</h4>
-
-<h2>₹800</h2>
-
-<p>30 Days Access</p>
-
-<a href="/plans" class="btn btn-primary">
-Choose Plan
-</a>
-
-</div>
+<h3>Monthly Plan</h3>
+<div class="plan-price">₹800</div>
+<p>30 days full access</p>
+<button class="plan-btn">Join</button>
 </div>
 
-<div class="col-md-4">
 <div class="plan-card">
-
-<h4>3 Month Plan</h4>
-
-<h2>₹2200</h2>
-
-<p>Best Value</p>
-
-<a href="/plans" class="btn btn-primary">
-Choose Plan
-</a>
-
-</div>
+<h3>3 Month Plan</h3>
+<div class="plan-price">₹2200</div>
+<p>Best value plan</p>
+<button class="plan-btn">Join</button>
 </div>
 
-<div class="col-md-4">
 <div class="plan-card">
-
-<h4>6 Month Plan</h4>
-
-<h2>₹4000</h2>
-
-<p>Long Term</p>
-
-<a href="/plans" class="btn btn-primary">
-Choose Plan
-</a>
-
-</div>
+<h3>6 Month Plan</h3>
+<div class="plan-price">₹4000</div>
+<p>Long term membership</p>
+<button class="plan-btn">Join</button>
 </div>
 
 </div>
 
-<br><br>
+<!-- ================= GALLERY ================= -->
 
-<!-- LIVE SEAT COUNTER -->
+<h2 class="section-title">Library Gallery</h2>
 
-<div class="text-center p-5 bg-light rounded">
+<div class="gallery">
 
-<h2>Seat Availability</h2>
+<img src="/static/img/lib1.jpg">
+<img src="/static/img/lib2.jpg">
+<img src="/static/img/lib3.jpg">
+<img src="/static/img/lib4.jpg">
 
-<h1 class="text-success">12 Seats Available</h1>
+</div>
 
-<a href="/login" class="btn btn-success btn-lg">
-Book Your Seat
+<!-- ================= CTA ================= -->
+
+<div class="cta">
+
+<h2>Start Your Study Journey Today</h2>
+
+<p>Join the best reading room for exam preparation</p>
+
+<a href="/login">
+<button>Join Now</button>
 </a>
 
 </div>
