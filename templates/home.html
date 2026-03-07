@@ -1,10 +1,17 @@
 {% extends "base.html" %}
 {% block content %}
-
+<div class="home-wrapper">
 <style>
 
 /* ===== HERO ===== */
-
+  
+.home-wrapper{
+width:100%;
+max-width:100%;
+margin:0;
+padding:0;
+}
+  
 .hero{
 height:480px;
 background:url("/static/img/library.jpg") center/cover no-repeat;
@@ -372,9 +379,9 @@ grid-template-columns:1fr;
 
 <form>
 
-<input type="text" placeholder="Roushan kumar">
+<input type="text" placeholder="Your Name">
 
-<input type="email" placeholder="panditrrr77@gmail.com">
+<input type="email" placeholder="Your email">
 
 <textarea rows="4" placeholder="Message"></textarea>
 
@@ -400,5 +407,5 @@ grid-template-columns:1fr;
 </a>
 
 </div>
-
+</div>
 {% endblock %}
