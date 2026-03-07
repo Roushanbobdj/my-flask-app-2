@@ -206,6 +206,38 @@ color:#4f46e5;
 font-weight:600;
 margin-bottom:10px;
 }
+.book-seat-btn{
+    display:inline-block;
+    background:#25D366;
+    color:white;
+    padding:14px 28px;
+    border-radius:12px;
+    text-decoration:none;
+    font-size:18px;
+    font-weight:600;
+    transition:0.3s;
+    
+    animation:pulse 2s infinite;
+}
+
+/* Hover Animation */
+.book-seat-btn:hover{
+    transform:scale(1.08);
+    box-shadow:0 10px 25px rgba(0,0,0,0.25);
+}
+
+/* Pulse Animation */
+@keyframes pulse{
+    0%{
+        box-shadow:0 0 0 0 rgba(37,211,102,0.7);
+    }
+    70%{
+        box-shadow:0 0 0 15px rgba(37,211,102,0);
+    }
+    100%{
+        box-shadow:0 0 0 0 rgba(37,211,102,0);
+    }
+}
   
 /* ================= FEATURES ================= */
 
@@ -419,7 +451,7 @@ text-align:center;
 </div>
 
 </section>
-<!-- ================= MEMBERSHIP PLANS ================= -->
+
 
 <!-- ================= MEMBERSHIP PLANS ================= -->
 
@@ -455,14 +487,10 @@ text-align:center;
 
 </div>
 
-<div style="text-align:center; margin-top:40px;">
-
-<a href="https://wa.me/918434950342?text=Hello%20I%20want%20to%20book%20a%20seat%20in%20Roushan%20Reading%20Room"
-target="_blank"
-class="hero-btn">
-
-Book Your Seat
-
+<a href="https://wa.me/918434950342?text=Hello%20Admin%2C%20mujhe%20reading%20room%20me%20seat%20book%20karni%20hai"
+   target="_blank"
+   class="book-seat-btn">
+   📚 Book Your Seat
 </a>
 
 </div>
