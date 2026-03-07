@@ -450,47 +450,10 @@ function toggleDarkMode(){
 }
 
 </script>
-<script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCJE_ERiqvNNAzIkz03w7rfV5eBHue7Mi0",
-  authDomain: "library-notification-df69f.firebaseapp.com",
-  projectId: "library-notification-df69f",
-  messagingSenderId: "618545934932",
-  appId: "1:618545934932:web:5a1f2e240abd3c7398b3c1"
-};
-
-const app = initializeApp(firebaseConfig);
-const messaging = getMessaging(app);
-
-Notification.requestPermission().then((permission) => {
-
- if(permission === "granted"){
-
-   getToken(messaging,{
-     vapidKey: "BN41wKbSxz2J_RtlKchxr8yp9Gl1X6JamnDLbxAM4meKI5QVRz25HjDAGPSup8Mr2F9hly5a1pmCiaDFj9P67E4"
-   }).then((token)=>{
-
-     console.log("TOKEN:", token);
-
-   });
-
- }
-
-});
-
-onMessage(messaging,(payload)=>{
-
- alert(payload.notification.title);
-
-});
-
-</script>
 </body>
 </html>
+
 
 
 
