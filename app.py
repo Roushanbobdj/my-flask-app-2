@@ -262,9 +262,18 @@ def login():
 @app.route("/logout")
 @login_required
 def logout():
+
+    # user logout
     logout_user()
+
+    # old flash messages clear
     session.pop('_flashes', None)
-    return redirect(url_for("login"))
+
+    # optional success message
+    flash("You have been logged out successfully")
+
+    # redirect to home page
+    return redirect(url_for("home"))
 
 # -------------------------
 # ADMIN REGISTER STUDENT
@@ -1198,6 +1207,7 @@ import os
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
+
 
 
 
