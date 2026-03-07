@@ -214,15 +214,33 @@ def upload_image_to_cloudinary(file):
 
 @app.route("/")
 def home():
+
+    # Agar user login hai to dashboard par bhejo
+    if current_user.is_authenticated:
+        return redirect(url_for(f"{current_user.role}_dashboard"))
+
+    # Agar login nahi hai to home page
     return render_template("home.html")
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+
+    # Agar user already login hai to dashboard par bhej do
+    if current_user.is_authenticated:
+        return redirect(url_for(f"{current_user.role}_dashboard"))
+
     if request.method == "POST":
+
         admission_number = request.form.get("admission_number")
         password = request.form.get("password")
-        user = Student.query.filter_by(admission_number=admission_number).first()
+
+        user = Student.query.filter_by(
+            admission_number=admission_number
+        ).first()
+
         if user and check_password_hash(user.password, password):
+
             if not user.is_active:
                 flash("Your account is blocked by admin")
                 return redirect(url_for("login"))
@@ -232,9 +250,13 @@ def login():
                 remember=True,
                 duration=timedelta(days=365)
             )
-            
+
+            # Login hone ke baad role ke hisab se dashboard
             return redirect(url_for(f"{user.role}_dashboard"))
-        flash("Invalid Credentials")
+
+        else:
+            flash("Invalid Credentials")
+
     return render_template("login.html")
 
 @app.route("/logout")
@@ -1176,6 +1198,7 @@ import os
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
+
 
 
 
