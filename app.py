@@ -644,6 +644,15 @@ def admin_dashboard():
     ).scalar() or 0
     total_fee = db.session.query(db.func.sum(Fee.amount)).scalar() or 0
     net_earning = total_fee - total_expense
+    # Today Fee Collection
+    today_earning = db.session.query(func.sum(Fee.amount)).filter(
+        func.date(Fee.date) == today
+    ).scalar() or 0
+    # This Month Fee Collection
+    total_fee_month = db.session.query(func.sum(Fee.amount)).filter(
+        extract('month', Fee.date) == now.month,
+        extract('year', Fee.date) == now.year
+    ).scalar() or 0
     # ==================================================
     # 🔔🔔🔔 SUPPORT NOTIFICATION (NEW – ADDED)
     # ==================================================
@@ -667,7 +676,9 @@ def admin_dashboard():
         total_expense=total_expense,
         unread_count=unread_count,
         total_fee=total_fee,
-        net_earning=net_earning
+        net_earning=net_earning,
+        today_earning=today_earning,
+        total_fee_month=total_fee_month
         
     )
 
@@ -1263,6 +1274,7 @@ import os
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
+
 
 
 
