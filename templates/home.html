@@ -7,7 +7,8 @@
 <title>Roushan Reading Room</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css">
+  
 <style>
 
 *{
@@ -59,25 +60,28 @@ transform:scale(1.05);
 /* ================= HERO SECTION ================= */
 
 .hero{
+
 height:85vh;
+
 display:flex;
 align-items:center;
 justify-content:center;
 text-align:center;
 flex-direction:column;
 padding:20px;
+position:relative;
 }
 
 .hero h2{
 font-size:48px;
-color:#111;
+color:white;
 margin-bottom:15px;
 animation:fadeUp 1s ease;
 }
 
 .hero p{
 font-size:18px;
-color:#555;
+color:white;
 max-width:600px;
 margin-bottom:25px;
 animation:fadeUp 1.2s ease;
@@ -97,7 +101,52 @@ transition:0.3s;
 background:#4338ca;
 transform:translateY(-3px);
 }
+.hero::before{
+content:"";
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.5);
+}
 
+.hero h2,
+.hero p,
+.hero a{
+position:relative;
+z-index:2;
+}
+.hero{
+position:relative;
+height:85vh;
+overflow:hidden;
+}
+
+.hero img{
+width:100%;
+height:85vh;
+object-fit:cover;
+}
+
+.hero-text{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+color:white;
+text-align:center;
+z-index:10;
+}
+
+.hero::before{
+content:"";
+position:absolute;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.5);
+z-index:5;
+}
 /* ================= FEATURES ================= */
 
 .features{
@@ -261,9 +310,7 @@ text-align:center;
 }
 
 </style>
-
 </head>
-
 <body>
 
 <!-- ================= TOP BAR ================= -->
@@ -281,17 +328,37 @@ text-align:center;
 
 <section class="hero">
 
+<div class="swiper heroSwiper">
+
+<div class="swiper-wrapper">
+
+<div class="swiper-slide">
+<img src="/static/images/library1.jpg">
+</div>
+
+<div class="swiper-slide">
+<img src="/static/images/library2.jpg">
+</div>
+
+<div class="swiper-slide">
+<img src="/static/images/library3.jpg">
+</div>
+
+</div>
+
+</div>
+
+<div class="hero-text">
+
 <h2>Best Study Environment</h2>
 
-<p>
-A peaceful and distraction-free reading room designed for serious students.
-Improve your focus and productivity with our modern study facilities.
-</p>
+<p>A peaceful and distraction-free reading room designed for serious students.</p>
 
 <a href="/login" class="hero-btn">Join Now</a>
 
-</section>
+</div>
 
+</section>
 
 <!-- ================= FEATURES ================= -->
 
@@ -385,7 +452,7 @@ Focused environment, comfortable seating, and great facilities.
 
 <p>Email: roushanreadingroom@gmail.com</p>
 
-<p>Location: Mithapur, Bihar</p>
+<p>Location: koderma, jharkhand</p>
 
 </div>
 
@@ -411,6 +478,15 @@ Focused environment, comfortable seating, and great facilities.
 © 2026 Roushan Reading Room | All Rights Reserved
 
 </div>
+<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
 
+<script>
+var swiper = new Swiper(".heroSwiper", {
+loop:true,
+autoplay:{
+delay:3000
+}
+});
+</script>
 </body>
 </html>
