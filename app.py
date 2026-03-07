@@ -642,6 +642,8 @@ def admin_dashboard():
     total_expense = db.session.query(
         db.func.sum(Expense.amount)
     ).scalar() or 0
+    total_fee = db.session.query(db.func.sum(Fee.amount)).scalar() or 0
+    net_earning = total_fee - total_expense
     # ==================================================
     # 🔔🔔🔔 SUPPORT NOTIFICATION (NEW – ADDED)
     # ==================================================
@@ -663,7 +665,10 @@ def admin_dashboard():
         today_expense=today_expense,
         month_expense=month_expense,
         total_expense=total_expense,
-        unread_count=unread_count
+        unread_count=unread_count,
+        total_fee=total_fee,
+        net_earning=net_earning
+        
     )
 
 @app.context_processor
@@ -1258,6 +1263,7 @@ import os
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
+
 
 
 
