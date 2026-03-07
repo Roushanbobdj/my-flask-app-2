@@ -451,7 +451,17 @@ function toggleDarkMode(){
 
 </script>
 <script>
-Notification.requestPermission();
+document.addEventListener("DOMContentLoaded", function(){
+
+ if("Notification" in window){
+
+   Notification.requestPermission().then(function(permission){
+      console.log("Notification permission:", permission);
+   });
+
+ }
+
+});
 </script>
 <script>
 
@@ -470,20 +480,29 @@ function showNotification(title, message){
 function checkNotification(){
 
  fetch("/check-notification")
- .then(response => response.json())
+ .then(res => res.json())
  .then(data => {
 
-   showNotification(data.title, data.message);
+   if(data.message){
+      showNotification(data.title, data.message);
+   }
 
  });
 
 }
 
-setInterval(checkNotification, 5000);
+setInterval(function(){
+   try{
+      checkNotification();
+   }catch(e){
+      console.log("Notification check error");
+   }
+},5000);
 
 </script>
 </body>
 </html>
+
 
 
 
