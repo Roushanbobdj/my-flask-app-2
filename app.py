@@ -748,15 +748,15 @@ def reset_password(id):
 # NOTIFICATIONS
 # -------------------------
 
-import urllib.parse
-
-@app.route("/send_notification", methods=["GET","POST"])
+@app.route("/send_notification", methods=["GET", "POST"])
 @login_required
 def send_notification():
 
+    # Only admin allowed
     if current_user.role != "admin":
         return redirect(url_for("student_dashboard"))
 
+    # Get all students for dropdown
     students = Student.query.filter_by(role="student").order_by(Student.name).all()
 
     if request.method == "POST":
@@ -764,20 +764,38 @@ def send_notification():
         message = request.form.get("message")
         student_id = request.form.get("student_id")
 
-        # DATABASE SAVE
+        if not message:
+            flash("Please enter a message!", "danger")
+            return redirect(url_for("send_notification"))
+
+        # Send to all students
         if student_id == "all":
+
             notification = Notification(
                 message=message,
                 student_id=None
             )
+
+        # Send to single student
         else:
+
+            student = Student.query.get(int(student_id))
+
+            if not student:
+                flash("Student not found!", "danger")
+                return redirect(url_for("send_notification"))
+
             notification = Notification(
                 message=message,
-                student_id=int(student_id)
+                student_id=student.id
             )
 
         db.session.add(notification)
         db.session.commit()
+
+        flash("Notification Sent Successfully!", "success")
+
+        return redirect(url_for("admin_dashboard"))
 
     return render_template(
         "send_notification.html",
@@ -1240,6 +1258,7 @@ import os
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
+
 
 
 
