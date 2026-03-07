@@ -755,7 +755,7 @@ def send_notification():
     if current_user.role != "admin":
         return redirect(url_for("student_dashboard"))
 
-    students = User.query.filter_by(role="student").order_by(User.name).all()
+    students = Student.query.filter_by(role="student").order_by(Student.name).all()
 
     if request.method == "POST":
 
@@ -763,8 +763,10 @@ def send_notification():
         student_id = request.form.get("student_id")
 
         if student_id == "all":
-            notification = Notification(message=message, student_id=None)
-
+            notification = Notification(
+                message=message,
+                student_id=None
+            )
         else:
             notification = Notification(
                 message=message,
@@ -774,10 +776,13 @@ def send_notification():
         db.session.add(notification)
         db.session.commit()
 
-        flash("Notification Sent Successfully!")
+        flash("Notification Sent Successfully!", "success")
         return redirect(url_for("admin_dashboard"))
 
-    return render_template("send_notification.html", students=students)
+    return render_template(
+        "send_notification.html",
+        students=students
+    )
     
 @app.route("/notifications")
 @login_required
@@ -1224,6 +1229,7 @@ import os
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
+
 
 
 
