@@ -572,7 +572,8 @@ def student_dashboard():
         month_days=month_days,
         attendance_dict=attendance_dict
     )
-
+    
+from sqlalchemy import func, extract
 
 @app.route("/admin_dashboard", methods=["GET"])
 @login_required
@@ -649,10 +650,10 @@ def admin_dashboard():
     today_earning = db.session.query(func.sum(Fee.amount)).filter(
         Fee.paid_on == today
     ).scalar() or 0
-    # 📅 This Month Fee Collection
+    # 📅 This Month Fee Collection (all payments made this month, including advance)
     total_fee_month = db.session.query(func.sum(Fee.amount)).filter(
-        Fee.paid_month == now.month,
-        Fee.paid_year == now.year
+        extract('month', Fee.paid_on) == now.month,
+        extract('year', Fee.paid_on) == now.year
     ).scalar() or 0
     # ==================================================
     # 🔔🔔🔔 SUPPORT NOTIFICATION (NEW – ADDED)
@@ -1298,30 +1299,3 @@ import os
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
