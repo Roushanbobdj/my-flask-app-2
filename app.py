@@ -1223,24 +1223,15 @@ def admin_seats():
 @app.route("/check-notification")
 @login_required
 def check_notification():
+    latest = Notification.query.order_by(Notification.id.desc()).first()
 
-    notification = Notification.query.filter(
-        (Notification.student_id == current_user.id) |
-        (Notification.student_id == None),
-        Notification.read == False
-    ).order_by(Notification.created_at.desc()).first()
-
-    if notification:
-
-        notification.read = True
-        db.session.commit()
-
+    if latest:
         return jsonify({
-            "title": "Library Notice",
-            "message": notification.message
+            "message": latest.message,
+            "date": str(latest.date)
         })
 
-    return jsonify({})
+    return jsonify({"message": None})
 # -------------------------
 # DB INIT (FIRST DEPLOY ONLY)
 # -------------------------
@@ -1257,6 +1248,7 @@ import os
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
+
 
 
 
