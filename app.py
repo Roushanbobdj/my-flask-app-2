@@ -214,9 +214,7 @@ def upload_image_to_cloudinary(file):
 
 @app.route("/")
 def home():
-    if current_user.is_authenticated:
-        return redirect(url_for(f"{current_user.role}_dashboard"))
-    return redirect(url_for("login"))
+    return render_template("home.html")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -1178,6 +1176,7 @@ import os
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
+
 
 
 
