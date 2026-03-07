@@ -751,16 +751,33 @@ def reset_password(id):
 @app.route("/send_notification", methods=["GET","POST"])
 @login_required
 def send_notification():
+
     if current_user.role != "admin":
         return redirect(url_for("student_dashboard"))
+
+    students = User.query.filter_by(role="student").all()
+
     if request.method == "POST":
+
         message = request.form.get("message")
-        notification = Notification(message=message, student_id=None)
+        student_id = request.form.get("student_id")
+
+        if student_id == "all":
+            notification = Notification(message=message, student_id=None)
+
+        else:
+            notification = Notification(
+                message=message,
+                student_id=int(student_id)
+            )
+
         db.session.add(notification)
         db.session.commit()
+
         flash("Notification Sent Successfully!")
         return redirect(url_for("admin_dashboard"))
-    return render_template("send_notification.html")
+
+    return render_template("send_notification.html", students=students)
 
 @app.route("/notifications")
 @login_required
@@ -1207,6 +1224,7 @@ import os
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
+
 
 
 
