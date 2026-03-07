@@ -453,8 +453,38 @@ function toggleDarkMode(){
 <script>
 Notification.requestPermission();
 </script>
+<script>
+
+function showNotification(title, message){
+
+ if(Notification.permission === "granted"){
+
+  new Notification(title,{
+   body: message
+  });
+
+ }
+
+}
+
+function checkNotification(){
+
+ fetch("/check-notification")
+ .then(response => response.json())
+ .then(data => {
+
+   showNotification(data.title, data.message);
+
+ });
+
+}
+
+setInterval(checkNotification, 5000);
+
+</script>
 </body>
 </html>
+
 
 
 
