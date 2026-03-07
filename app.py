@@ -779,14 +779,6 @@ def send_notification():
         db.session.add(notification)
         db.session.commit()
 
-        # 🔵 WHATSAPP MESSAGE
-        encoded_msg = urllib.parse.quote(message)
-        whatsapp_link = f"https://wa.me/?text={encoded_msg}"
-
-        flash("Notification Sent Successfully!", "success")
-
-        return redirect(whatsapp_link)
-
     return render_template(
         "send_notification.html",
         students=students
@@ -1248,6 +1240,7 @@ import os
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
+
 
 
 
